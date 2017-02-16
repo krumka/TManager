@@ -6,7 +6,7 @@ gem 'rails', '3.2.22.2'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'pg'
-gem "haml"
+gem 'haml'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -28,6 +28,11 @@ group :development, :test do
 
   gem 'better_errors'#Tx Seb
   gem "binding_of_caller"#Tx Seb
+end
+
+group :development do
+  # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
+  gem 'listen'
 end
 
 # To use ActiveModel has_secure_password
