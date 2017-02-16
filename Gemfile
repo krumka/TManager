@@ -5,8 +5,8 @@ gem 'rails', '3.2.22.2'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3'
-
+gem 'pg'
+gem "haml"
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -21,6 +21,14 @@ group :assets do
 end
 
 gem 'jquery-rails'
+
+group :development, :test do
+  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem 'byebug', platform: :mri
+
+  gem 'better_errors'#Tx Seb
+  gem "binding_of_caller"#Tx Seb
+end
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
