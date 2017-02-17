@@ -1,22 +1,11 @@
-%h1 Listing games
+.row.title-page
+  %h1.col-sm-9 Listing games
+  .col-sm-3= link_to 'New Game', new_game_path, class: "btn-up btn btn-primary"
 
-%table
-  %tr
-    %th Name
-    %th Game type
-    %th Platform
-    %th Description
-    %th
-    %th
-    %th
-  - @games.each do |game|
-    %tr
-      %td= game.name
-      %td= game.game_type
-      %td= game.platform
-      %td= game.description
-      %td= link_to 'Show', game
-      %td= link_to 'Edit', edit_game_path(game)
-      %td= link_to 'Destroy', game, method: :delete, data: { confirm: 'Are you sure?' }
-%br/
-= link_to 'New Game', new_game_path
+.row
+  .col-sm-4 Name
+  .col-sm-8 Description
+- @games.each do |game|
+  .row
+    .col-sm-4= link_to game.name, game
+    .col-sm-8= game.description.first(210) + " . . . . "

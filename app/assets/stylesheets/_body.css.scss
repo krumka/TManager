@@ -3,3 +3,15 @@ body {
   font-family: Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 14px;
 }
+h1{
+  font-weight: 700;
+  font-size: 2em;
+  font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  text-transform: uppercase;
+  color: $primary;
+  padding: 3vh 5vw;
+  margin:0;
+}
+.title-page .btn{
+  margin-top: 1.5em;
+}

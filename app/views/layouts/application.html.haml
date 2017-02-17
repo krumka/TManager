@@ -24,14 +24,15 @@
             %li= link_to "Games", games_path
     .void
     .container
-      .row#content
-        = yield
+      .row
+        .col-xs-12
+          = yield
+    .scroll-top.page-scroll.hidden-lg.hidden-md
+      %a.btn.btn-primary{:href => "#page-top"}
+        %i.fa.fa-chevron-up
     %footer.text-center
       .footer-below
         .container
           .row
             .col-lg-12
               Copyright © Rem's I.T. 2017
-    .scroll-top.page-scroll.hidden-lg.hidden-md
-      %a.btn.btn-primary{:href => "#page-top"}
-        %i.fa.fa-chevron-up
