@@ -1,0 +1,28 @@
+@import "variables";
+
+nav, .navbar-default{
+  background-color: $primary;
+  color: $text;
+}
+a.navbar-brand{
+  color: $text;
+}
+.navbar-default .navbar-brand{
+  color: $text;
+}
+.navbar-default:hover .navbar-brand:hover{
+  color: $secondary;
+}
+.void{
+  height:54px;
+}
+.navbar-default .navbar-nav > li > a{
+  color: $text;
+}
+.navbar-default:hover .navbar-nav > li > a:hover{
+  color: $secondary;
+}
+.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus{
+  background-color: $text;
+  color: $primary;
+}

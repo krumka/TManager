@@ -8,6 +8,11 @@ gem 'rails', '3.2.22.2'
 gem 'pg'
 gem 'haml'
 
+gem 'bootstrap-sass', '~> 3.2.0'
+gem 'autoprefixer-rails'
+
+gem 'font-awesome-rails'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do

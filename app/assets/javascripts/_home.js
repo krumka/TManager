@@ -1,0 +1,29 @@
+//Get la page courante
+var url = $(location).attr('href').split("/");
+url = url[3];
+url = url.split("?")[0];
+console.log(url);
+
+switch(url){
+    case "games" :
+        loadScript("games.js", null);
+        break;
+}
+
+
+
+function loadScript(url, callback){
+    // Adding the script tag to the head as suggested before
+    var head = document.getElementsByTagName('head')[0];
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = "/assets/" + url;
+
+    // Then bind the event to the callback function.
+    // There are several events for cross browser compatibility.
+    script.onreadystatechange = callback;
+    script.onload = callback;
+
+    // Fire the loading
+    head.appendChild(script);
+}

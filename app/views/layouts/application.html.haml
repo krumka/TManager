@@ -1,0 +1,37 @@
+!!!
+%html{lang: "en"}
+  %head
+    %title Tmanager
+    %meta{:charset => "utf-8"}/
+    %meta{:content => "IE=edge", "http-equiv" => "X-UA-Compatible"}/
+    %meta{:content => "width=device-width, initial-scale=1", :name => "viewport"}/
+    %meta{:content => "Gestion de vos tournois de jeux videos", :name => "description"}/
+    %meta{:content => "Rem's I.T.", :name => "author"}/
+    = stylesheet_link_tag    "application", :media => "all"
+    = javascript_include_tag "application"
+    = csrf_meta_tags
+  %body#page-top
+    %nav#mainNav.navbar.navbar-default.navbar-fixed-top.navbar-custom
+      .container
+        .navbar-header.page-scroll
+          %button.navbar-toggle{"data-target" => "#bs-example-navbar-collapse-1", "data-toggle" => "collapse", :type => "button"}
+            %span.sr-only Toggle navigation
+            Menu
+            %i.fa.fa-bars
+          %a.navbar-brand{:href => "/"} TManager
+        #bs-example-navbar-collapse-1.collapse.navbar-collapse
+          %ul.nav.navbar-nav.navbar-right
+            %li= link_to "Games", games_path
+    .void
+    .container
+      .row#content
+        = yield
+    %footer.text-center
+      .footer-below
+        .container
+          .row
+            .col-lg-12
+              Copyright © Rem's I.T. 2017
+    .scroll-top.page-scroll.hidden-lg.hidden-md
+      %a.btn.btn-primary{:href => "#page-top"}
+        %i.fa.fa-chevron-up
