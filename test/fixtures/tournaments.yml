@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  name: MyString
+  adress: MyString
+  description: MyText
+  date: 2017-02-20 15:51:01
+  max_gamers: 1
+
+two:
+  name: MyString
+  adress: MyString
+  description: MyText
+  date: 2017-02-20 15:51:01
+  max_gamers: 1

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20170216131745) do
+ActiveRecord::Schema.define(:version => 20170220150932) do
 
   create_table "games", :force => true do |t|
     t.string   "name",               :null => false
@@ -27,5 +27,35 @@ ActiveRecord::Schema.define(:version => 20170216131745) do
   end
 
   add_index "games", ["name"], :name => "index_games_on_name", :unique => true
+
+  create_table "games_images", :force => true do |t|
+    t.integer  "game_id"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+  end
+
+  create_table "programs", :force => true do |t|
+    t.integer  "game_id"
+    t.integer  "tournament_id"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "programs", ["game_id"], :name => "index_programs_on_game_id"
+  add_index "programs", ["tournament_id"], :name => "index_programs_on_tournament_id"
+
+  create_table "tournaments", :force => true do |t|
+    t.string   "name"
+    t.string   "adress"
+    t.text     "description"
+    t.datetime "date"
+    t.integer  "max_gamers"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
 
 end

@@ -9,8 +9,20 @@ switch(url){
         loadScript("games.js", null);
         break;
 }
-
-
+$( document ).ready(function() {
+    $( window ).resize(function() {
+        if($( window ).height()>=$( document ).height()){
+            $("footer").css("bottom", 0);
+            $("footer").css("position", "fixed");
+        }else{
+            $("footer").css("position", "relative");
+        }
+    });
+    if($( window ).height()>=$( document ).height()){
+        $("footer").css("bottom", 0);
+        $("footer").css("position", "fixed");
+    }
+});
 
 function loadScript(url, callback){
     // Adding the script tag to the head as suggested before

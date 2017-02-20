@@ -1,0 +1,19 @@
+.row.title-page
+  .col-sm-9
+    %h1= @tournament.name
+  .col-sm-3
+    = link_to 'Edit', edit_tournament_path(@tournament), class: "btn-up btn btn-primary"
+.row
+  %b Date :
+  = @tournament.date.day.to_s + "/" + @tournament.date.month.to_s + "/" + @tournament.date.year.to_s
+.row
+  %b Location :
+  = @tournament.adress
+.row
+  %b Description :
+  = @tournament.description
+.row
+  %b Amount of gamers max:
+  = @tournament.max_gamers
+.row
+  = link_to 'Back', tournaments_path, class: "btn-up btn btn-primary"

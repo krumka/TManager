@@ -6,6 +6,6 @@
   .col-sm-4 Name
   .col-sm-8 Description
 - @games.each do |game|
-  .row
-    .col-sm-4= link_to game.name, game
-    .col-sm-8= game.description.first(210) + " . . . . "
+  .row.game
+    .col-sm-4.title= link_to game.name, game
+    .col-sm-8.desc= game.description.first(195) + " . . . . "

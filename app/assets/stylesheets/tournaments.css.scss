@@ -1,24 +1,25 @@
-// Place all the styles related to the Games controller here.
+// Place all the styles related to the Tournaments controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 @import "variables";
 
-.game{
+.tournament{
   background-color: $secondary;
   border-radius: 5px;
   padding: 10px;
   margin: 5px 0;
   color: $text;
 }
-.game .desc{
+.tournament .desc{
   border-left: 1px solid white;
 }
-.game .title a{
+.tournament .title a{
   color: $text;
   text-decoration: underline;
   font-weight: bold;
-  font-size:1.3em;
+  font-size:1.5em;
 }
-.row{
-  margin-bottom: .7em;
+.tournament .title a:hover{
+  color: $primary;
+  background-color: $secondary;
 }

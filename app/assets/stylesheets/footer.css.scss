@@ -1,6 +1,8 @@
 @import "variables";
 footer {
   width: 100%;
+  position: relative;
+  bottom:0;
   /* Set the fixed height of the footer here */
   height: 60px;
   background-color: $primary;

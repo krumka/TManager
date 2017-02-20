@@ -1,16 +1,16 @@
-%p#notice= notice
-%p
-  %b Name:
-  = @game.name
-%p
-  %b Game type:
+.row.title-page
+  .col-sm-9
+    %h1= @game.name
+  .col-sm-3
+    = link_to 'Edit', edit_game_path(@game), class: "btn-up btn btn-primary"
+.row
+  %b Game type :
   = @game.game_type
-%p
-  %b Platform:
+.row
+  %b Platform :
   = @game.platform
-%p
-  %b Description:
+.row
+  %b Description :
   = @game.description
-= link_to 'Edit', edit_game_path(@game)
-|
-\#{link_to 'Back', games_path}
+.row
+  = link_to 'Back', games_path, class: "btn-up btn btn-primary"

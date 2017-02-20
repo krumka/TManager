@@ -1,0 +1,11 @@
+.row.title-page
+  %h1.col-sm-9 Listing tournaments
+  .col-sm-3= link_to 'New Tournament', new_tournament_path, class: "btn-up btn btn-primary"
+
+- @tournaments.each do |t|
+  .row.tournament.text-center
+    .col-sm-10.title= link_to t.name, t
+    .col-sm-2.date= t.date.day.to_s + "/" + t.date.month.to_s + "/" + t.date.year.to_s
+  .row.games
+    -t.games.each do |g|
+      .col-sm-1.game= link_to g.name, g
