@@ -20,8 +20,13 @@
     %b Games :
   - if @games.any?
     %br/
-    - @games.each do |game|
-      .col-xs-3.text-center.game= link_to game.name, game, class: "game"
+    -i=0
+    - (@games.size / 4 + 1).times do |row|
+      .row
+      - 4.times do |col|
+        -if !@games[i].nil?
+          .col-xs-3.text-center.game= link_to @games[i].name, @games[i], class: "game"
+          - i+=1
   - else
     .col-sm-9 No games to show
 .row

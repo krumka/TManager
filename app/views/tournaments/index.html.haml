@@ -9,5 +9,10 @@
         .col-sm-10.title= link_to t.name, t
         .col-sm-2.date= t.date.day.to_s + "/" + t.date.month.to_s + "/" + t.date.year.to_s
       .row
-        -t.games.each do |g|
-          .col-sm-3.game= link_to g.name, g
+        -i=0
+        - (t.games.size / 4 + 1).times do |row|
+          .row
+          - 4.times do |col|
+            -if !t.games[i].nil?
+              .col-xs-3.text-center.game= link_to t.games[i].name, t.games[i], class: "game"
+              - i+=1

@@ -1,6 +1,6 @@
 # TManager
 
-If you want to see the progression click on [this link](http://tmanager.lambre.me)
+If you want to follow the progression on the interface click on [this link](http://tmanager.lambre.me)
 
 ## Goal
 
