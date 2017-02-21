@@ -14,6 +14,7 @@ class TournamentsController < ApplicationController
   # GET /tournaments/1.json
   def show
     @tournament = Tournament.find(params[:id])
+    @games = @tournament.games
 
     respond_to do |format|
       format.html # show.html.erb
@@ -25,6 +26,7 @@ class TournamentsController < ApplicationController
   # GET /tournaments/new.json
   def new
     @tournament = Tournament.new
+    @games = Game.all
 
     respond_to do |format|
       format.html # new.html.erb
@@ -35,6 +37,7 @@ class TournamentsController < ApplicationController
   # GET /tournaments/1/edit
   def edit
     @tournament = Tournament.find(params[:id])
+    @games = Game.all
   end
 
   # POST /tournaments

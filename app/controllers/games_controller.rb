@@ -2,7 +2,12 @@ class GamesController < ApplicationController
   # GET /games
   # GET /games.json
   def index
-    @games = Game.all
+    if params[:tournament_id].nil?
+      @games = Game.all
+    else
+      @tournament = Tournament.find(params[:tournament_id])
+      @games = @tournament.games
+    end
 
     respond_to do |format|
       format.html # index.html.erb
@@ -24,7 +29,12 @@ class GamesController < ApplicationController
   # GET /games/new
   # GET /games/new.json
   def new
-    @game = Game.new
+    if params[:tournament_id].nil?
+      @game = Game.new
+    else
+      @tournament = Tournament.find(params[:tournament_id])
+      @games = @tournament.games
+    end
 
     respond_to do |format|
       format.html # new.html.erb
@@ -79,5 +89,10 @@ class GamesController < ApplicationController
       format.html { redirect_to games_url }
       format.json { head :no_content }
     end
+  end
+
+  def add_to_tournament
+    Tournament.find(params[:tournament_id]).games << Game.find(params[:game_id])
+    redirect_to "/tournaments/" + params[:tournament_id] + "/games/new"
   end
 end

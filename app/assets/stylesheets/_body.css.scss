@@ -12,6 +12,15 @@ h1{
   padding: 3vh 5vw;
   margin:0;
 }
+h2{
+  font-weight: 700;
+  font-size: 1.7em;
+  font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  text-transform: uppercase;
+  color: $primary;
+  padding: 3vh 5vw;
+  margin:0;
+}
 .title-page .btn{
   margin-top: 1.5em;
 }
@@ -20,4 +29,17 @@ h1{
   padding:10px;
   margin:5px;
   border-radius: 5px;
+}
+a.game, a.tournament{
+  color: $text;
+  text-decoration: underline;
+  font-weight: bold;
+  font-size:1.3em;
+}
+a.game:hover, a.tournament:hover{
+  color: white;
+  background-color: transparent;
+}
+a.btn-up.btn.btn-primary{
+  color: $text;
 }

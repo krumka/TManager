@@ -8,6 +8,9 @@ switch(url){
     case "games" :
         loadScript("games.js", null);
         break;
+    case "tournaments" :
+        loadScript("tournaments.js", null);
+        break;
 }
 $( document ).ready(function() {
     $( window ).resize(function() {

@@ -4,13 +4,13 @@
   .col-sm-3
     = link_to 'Edit', edit_game_path(@game), class: "btn-up btn btn-primary"
 .row
-  %b Game type :
-  = @game.game_type
+  %b.col-sm-3 Game type :
+  .col-sm-9= @game.game_type
 .row
-  %b Platform :
-  = @game.platform
+  %b.col-sm-3 Platform :
+  .col-sm-9= @game.platform
 .row
-  %b Description :
-  = @game.description
+  %b.col-sm-3 Description :
+  .col-sm-9= @game.description
 .row
   = link_to 'Back', games_path, class: "btn-up btn btn-primary"

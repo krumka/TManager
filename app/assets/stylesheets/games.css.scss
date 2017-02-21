@@ -4,20 +4,21 @@
 @import "variables";
 
 .game{
-  background-color: $secondary;
+  background-color: transparent;
   border-radius: 5px;
   padding: 10px;
   margin: 5px 0;
-  color: $text;
+  color: $text_second;
+
+}
+.game a{
+  color: $text_second;
+  text-decoration: underline;
+  font-size: 1.2em;
+  font-weight: bold;
 }
 .game .desc{
   border-left: 1px solid white;
-}
-.game .title a{
-  color: $text;
-  text-decoration: underline;
-  font-weight: bold;
-  font-size:1.3em;
 }
 .row{
   margin-bottom: .7em;

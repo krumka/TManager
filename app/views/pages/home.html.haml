@@ -12,5 +12,12 @@
   .row.text-center
     - @games.each do |game|
       .col-sm-4.title
-        %p= link_to game.name, game
+        %p.game= link_to game.name, game
         %p= "Added : " + game.created_at.day.to_s + "/" + game.created_at.month.to_s + "/" + game.created_at.year.to_s
+%section.tournament_home
+  %h1 Next tournaments
+  .row.text-center
+    - @tournaments.each do |tournament|
+      .col-sm-4.title
+        %p.game= link_to tournament.name, tournament
+        %p= "Date : " + tournament.date.day.to_s + "/" + tournament.date.month.to_s + "/" + tournament.date.year.to_s

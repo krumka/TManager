@@ -1,5 +1,7 @@
 # TManager
 
+If you want to see the progression click on [this link](http://tmanager.lambre.me)
+
 ## Goal
 
 This project's goal is to improve and train my rails skills.  

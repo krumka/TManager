@@ -1,3 +1,18 @@
-%h1 New game
-= render 'form'
-= link_to 'Back', games_path
+-if @tournament.nil?
+  %h1 New game
+  = render 'form'
+  = link_to 'Back', games_path
+-else
+  %h1 Add Games to the tournament
+  %h2= "Current games in " + @tournament.name
+  - if @games.nil?
+    %h3 No games added yet
+  %ul
+    - @games.each do |game|
+      %li= link_to game.name, game
+  -if (Game.all - @games).any?
+    =select_tag "Games", options_from_collection_for_select(Game.all - @games, "id", "name")
+    %a.btn.btn-up.btn-primary#addGame2Tournament Add
+  -else
+    %h3 No more games to add
+    .col-sm-3= link_to 'Add Game', new_game_path, class: "btn-up btn btn-primary"
