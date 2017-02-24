@@ -14,7 +14,7 @@ a.navbar-brand{
   color: $secondary;
 }
 .void{
-  height:54px;
+  height:100px;
 }
 .navbar-default .navbar-nav > li > a{
   color: $text;
@@ -25,4 +25,45 @@ a.navbar-brand{
 .navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus{
   background-color: $text;
   color: $primary;
+}
+nav.navbar {
+  min-height: 100px;
+  -webkit-transition: all 0.4s ease;
+  transition: all 0.4s ease;
+
+  .navbar-brand{
+    -webkit-transition: all 0.4s linear;
+    transition: all 0.4s linear;
+    font-size: 50px;
+    line-height: normal;
+  }
+  li a {
+    line-height: 60px;
+    -webkit-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+  }
+  img{
+    -webkit-transition: all 0.4s linear;
+    transition: all 0.4s linear;
+    height:90px;
+    float: left;
+  }
+}
+nav.navbar.shrink {
+  min-height: 52px;
+  .navbar-brand{
+    font-size: 28px;
+    line-height: 20px;
+  }
+  li a {
+    line-height: 20px;
+  }
+  img{
+    height: 50px;
+    top:1px;
+  }
+}
+#marginn{
+  margin-top: 0;
+  width:100%;
 }

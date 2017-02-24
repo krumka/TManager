@@ -25,7 +25,17 @@ $( document ).ready(function() {
         $("footer").css("bottom", 0);
         $("footer").css("position", "fixed");
     }
+    $(window).scroll(function() {
+        if ($(document).scrollTop() > 50) {
+            $('nav').addClass('shrink');
+        } else {
+            $('nav').removeClass('shrink');
+        }
+    });
+    $(".alert").delay(5000).hide('slow');
 });
+
+
 
 function loadScript(url, callback){
     // Adding the script tag to the head as suggested before

@@ -43,3 +43,31 @@ a.game:hover, a.tournament:hover{
 a.btn-up.btn.btn-primary{
   color: $text;
 }
+.alert-notice {
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+  color: #3c763d;
+}
+.alert-alert {
+  background-color: #fdd;
+  border-color: #e0bebe;
+  color: #f44336;
+}
+.alert-warning {
+  background-color: #ffffcc;
+  border-color: #d7d7a6;
+  color: #ff9800;
+}
+.jumbotron {
+  margin-bottom: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+@media screen and (min-width: 768px){
+  .jumbotron h1, .jumbotron .h1 {
+    font-size: 40px;
+  }
+}
+.btn-register{
+  padding : 30px;
+}

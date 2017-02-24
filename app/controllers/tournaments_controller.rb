@@ -2,7 +2,7 @@ class TournamentsController < ApplicationController
   # GET /tournaments
   # GET /tournaments.json
   def index
-    @tournaments = Tournament.all
+    @tournaments = Tournament.order(:date).all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -25,7 +25,7 @@ class TournamentsController < ApplicationController
   # GET /tournaments/new
   # GET /tournaments/new.json
   def new
-    @tournament = Tournament.new
+    @tournament = Tournament.order(:date).new
     @games = Game.all
 
     respond_to do |format|
@@ -79,7 +79,7 @@ class TournamentsController < ApplicationController
     @tournament.destroy
 
     respond_to do |format|
-      format.html { redirect_to tournaments_url }
+      format.html { redirect_to tournaments_url, notice: 'Tournament is deleted' }
       format.json { head :no_content }
     end
   end

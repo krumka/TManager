@@ -86,13 +86,18 @@ class GamesController < ApplicationController
     @game.destroy
 
     respond_to do |format|
-      format.html { redirect_to games_url }
+      format.html { redirect_to games_url, notice: 'Game deleted' }
       format.json { head :no_content }
     end
   end
 
   def add_to_tournament
     Tournament.find(params[:tournament_id]).games << Game.find(params[:game_id])
-    redirect_to "/tournaments/" + params[:tournament_id] + "/games/new"
+    redirect_to "/tournaments/" + params[:tournament_id] + "/games/new", notice: 'Game added to the tournament'
+  end
+
+  def del_from_tournament
+    Tournament.find(params[:tournament_id]).games.delete(Game.find(params[:game_id]))
+    redirect_to "/tournaments/" + params[:tournament_id] + "/games/new", notice: 'Game deleted from the tournament'
   end
 end

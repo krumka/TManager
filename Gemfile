@@ -15,6 +15,17 @@ gem 'font-awesome-rails'
 
 gem 'paperclip'
 
+gem 'cancancan'
+gem 'devise'
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'oa-core'
+gem 'oa-openid', :require => 'omniauth/openid'
+
+gem 'jquery-turbolinks'
+
+gem 'delayed_job_active_record'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do

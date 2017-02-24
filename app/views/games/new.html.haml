@@ -9,7 +9,9 @@
     %h3 No games added yet
   %ul
     - @games.each do |game|
-      %li= link_to game.name, game
+      %p.game
+        = link_to game.name, game
+        = link_to "Delete", tournaments_path + "/" + @tournament.id.to_s + games_path + "/" + game.id.to_s + "/delete", id: "delete_game", class: "btn btn-primary btn-up", style: "margin-left: 20px;text-decoration: none;"
   -if (Game.all - @games).any?
     =select_tag "Games", options_from_collection_for_select(Game.all - @games, "id", "name")
     %a.btn.btn-up.btn-primary#addGame2Tournament Add
