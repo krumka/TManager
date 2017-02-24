@@ -31,6 +31,10 @@ The project uses the following thechnologies :
  * Gem `Geocoder` for the geolocation
  * The application must be deployed on a `Heroku` server afterwards
  
+## Note
+
+ The config directory has been removed because of sensitive informations
+
 ## Contributors
 
  * Rémy Lambinet (github account's owner)
