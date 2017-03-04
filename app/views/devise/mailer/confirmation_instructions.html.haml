@@ -1,0 +1,6 @@
+= render :layout => "mail" do
+  %h2{:style => "color:#0E7693; font-size:22px; padding-top:12px;"}
+    Welcome
+  .article-content{:align => "left"}
+    %p You can confirm your account email through the link below :
+    %p= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token)

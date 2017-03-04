@@ -42,7 +42,7 @@ nav.navbar {
     -webkit-transition: all 0.4s ease;
     transition: all 0.4s ease;
   }
-  img{
+  #logo{
     -webkit-transition: all 0.4s linear;
     transition: all 0.4s linear;
     height:90px;
@@ -58,7 +58,7 @@ nav.navbar.shrink {
   li a {
     line-height: 20px;
   }
-  img{
+  #logo{
     height: 50px;
     top:1px;
   }

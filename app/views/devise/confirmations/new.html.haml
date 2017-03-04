@@ -1,0 +1,12 @@
+= render :layout => "layouts/h1" do
+  Resend confirmation instructions
+.row
+  .col-sm-6.col-sm-offset-3
+    = form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post, class: "form-inline text-center"}) do |f|
+      = devise_error_messages!
+      .form-group
+        = f.email_field :email, class: 'form-control', placeholder: "Your Email"
+      .form-group
+        = f.submit "Resend", class: 'btn btn-primary'
+.row
+  .col-sm-6.col-sm-offset-3.text-center= render "devise/shared/links"

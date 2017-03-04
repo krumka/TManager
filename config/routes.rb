@@ -1,7 +1,7 @@
 Tmanager::Application.routes.draw do
 
-  devise_for :users, :controllers => { omniauth_callbacks: 'omniauth_callbacks' }
-  match '/users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], :as => :finish_signup
+  devise_for :users, :controllers => { registrations: 'registrations', :omniauth_callbacks => 'omniauth_callbacks' }
+  match '/users/:id/finish_signup' => 'users#finish_signup', via: [ :get, :put], :as => :finish_signup
 
   resources :users
 
@@ -13,6 +13,8 @@ Tmanager::Application.routes.draw do
     resources :games do
       post "add" => "games#add_to_tournament"
       post "delete" => "games#del_from_tournament"
+      get "subscribe" => "users#subscribe"
+      get "unsubscribe" => "users#unsubscribe"
     end
   end
 

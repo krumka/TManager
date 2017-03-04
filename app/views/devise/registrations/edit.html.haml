@@ -1,0 +1,104 @@
+= render :layout => "layouts/h1" do
+  Edit User
+.row
+  .col-sm-6.col-sm-offset-3
+    = form_for(current_user, html: {multipart: true}) do |f|
+      = devise_error_messages!
+      .form-group
+        .input-group
+          .input-group-addon
+            %i.fa.fa-user{"aria-hidden" => "true"}
+          = f.text_field :username, class: "form-control", placeholder: "Username"
+      .form-group
+        .row
+          .col-sm-4
+            %h4.text-center= f.label :image, "Avatar : "
+          .col-sm-8
+            = f.file_field :image
+        -if current_user.image.exists?
+          .row
+            .col-sm-4
+              %h4.text-center Current Image :
+            .col-sm-8
+              = image_tag current_user.image.url(:medium)
+      .form-group
+        .row
+          .col-sm-6
+            .input-group
+              .input-group-addon
+                %i.fa.fa-tag{"aria-hidden" => "true"}
+              = f.text_field :firstname, class: "form-control", placeholder: "Firstname"
+          .col-sm-6
+            .input-group
+              .input-group-addon
+                %i.fa.fa-tag{"aria-hidden" => "true"}
+              = f.text_field :name, class: "form-control", placeholder: "Name"
+      .form-group.birthdate
+        .input-group
+          .input-group-addon
+            %i.fa.fa-birthday-cake{"aria-hidden" => "true"}
+          .form-inline= f.date_select :birthdate, :order => [:day, :month, :year],
+          :end_year => 100.years.ago.year, :start_year => 16.years.ago.year,
+          prompt: { day: 'Day', month: 'Month', year: 'Year' }
+      .form-group
+        .input-group
+          .input-group-addon
+            %i.fa.fa-home{"aria-hidden" => "true"}
+          = f.text_field :adress, class: "form-control", placeholder: "Address"
+      .form-group
+        .row
+          .col-sm-3
+            .input-group
+              .input-group-addon
+                %i.fa.fa-map-marker{"aria-hidden" => "true"}
+              = f.number_field :zip_code, class: "form-control", placeholder: "Zip Code"
+          .col-sm-9
+            .input-group
+              .input-group-addon
+                %i.fa.fa-road{"aria-hidden" => "true"}
+              = f.text_field :city, class: "form-control", placeholder: "City"
+      .form-group
+        .input-group
+          .input-group-addon
+            %i.fa.fa-globe{"aria-hidden" => "true"}
+          = f.text_field :country, class: "form-control", placeholder: "Country"
+      %br/
+      %br/
+      = f.submit "Update", class: 'btn btn-primary btn-up'
+= render :layout => "layouts/h1" do
+  Edit Primary Infos
+.row
+  .col-sm-6.col-sm-offset-3
+    = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
+      = devise_error_messages!
+      .form-group
+        .input-group
+          .input-group-addon
+            %i.fa.fa-envelope{"aria-hidden" => "true"}
+          = f.email_field :email, autofocus: true, class: "form-control"
+      - if devise_mapping.confirmable? && resource.pending_reconfirmation?
+        .helpBlock
+          Currently waiting confirmation for: #{resource.unconfirmed_email}
+      .form-group
+        .input-group
+          .input-group-addon
+            %i.fa.fa-key{"aria-hidden" => "true"}
+          = f.password_field :password, autocomplete: "off", placeholder: "Password", class: "form-control"
+        .help-block leave blank if you don't want to change it
+      .form-group
+        .input-group
+          .input-group-addon
+            %i.fa.fa-key{"aria-hidden" => "true"}
+          = f.password_field :password_confirmation, autocomplete: "off", placeholder: "Password Confirmation", class: "form-control"
+      %br/
+      %br/
+      = f.submit "Update", class: 'btn btn-primary btn-up'
+= render :layout => "layouts/h1" do
+  Cancel my account
+.row
+  .col-sm-6.col-sm-offset-3
+    %h2
+      Unhappy?
+      = button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, class: 'btn btn-primary'
+.row
+  .col-sm-6.col-sm-offset-3.text-center= render "devise/shared/links"

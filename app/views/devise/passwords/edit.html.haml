@@ -1,0 +1,21 @@
+= render :layout => "layouts/h1" do
+  Change your password
+.row
+  .col-sm-6.col-sm-offset-3
+    = form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f|
+      = devise_error_messages!
+      = f.hidden_field :reset_password_token
+      .form-group
+        .input-group
+          .input-group-addon
+            %i.fa.fa-key{"aria-hidden" => "true"}
+          = f.password_field :password, autofocus: true, autocomplete: "off", placeholder: "Password", class: "form-control"
+      .form-group
+        .input-group
+          .input-group-addon
+            %i.fa.fa-key{"aria-hidden" => "true"}
+          = f.password_field :password_confirmation, autocomplete: "off", placeholder: "Password Confirmation", class: "form-control"
+      .actions
+        = f.submit "Change my password", class: 'btn btn-primary btn-up'
+.row
+  .col-sm-6.col-sm-offset-3.text-center= render "devise/shared/links"

@@ -33,6 +33,7 @@ $( document ).ready(function() {
         }
     });
     $(".alert").delay(5000).hide('slow');
+    $(".birthdate select").addClass("form-control form-control-inline");
 });
 
 

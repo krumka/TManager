@@ -1,5 +1,6 @@
-%h1 Editing game
-= render 'form'
-= link_to 'Show', @game
-|
-\#{link_to 'Back', games_path}
+= render :layout => "layouts/h1" do
+  Editing game
+.row
+  .col-sm-6.col-sm-offset-3= render 'form'
+.row
+  .col-sm-12= link_to 'Back', games_path

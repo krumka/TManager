@@ -19,6 +19,7 @@ gem 'cancancan'
 gem 'devise'
 gem 'omniauth'
 gem 'omniauth-facebook'
+gem 'strong_parameters'
 gem 'oa-core'
 gem 'oa-openid', :require => 'omniauth/openid'
 

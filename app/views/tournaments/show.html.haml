@@ -1,3 +1,6 @@
+.wide
+  .blur= image_tag "gamer_table.JPG", style: "width: 100%;top:100px;left:0;"
+
 .row.title-page
   .col-sm-9
     %h1= @tournament.name
@@ -16,8 +19,9 @@
   %b.col-sm-3 Gamers max:
   .col-sm-9= @tournament.max_gamers
 .row
-  .col-sm-3
-    %b Games :
+  .col-sm-12
+    %h1 Games :
+.row
   - if @games.any?
     %br/
     -i=0
@@ -25,10 +29,33 @@
       .row
       - 4.times do |col|
         -if !@games[i].nil?
-          .col-xs-3.text-center.game= link_to @games[i].name, @games[i], class: "game"
+          .col-md-3.text-center.game
+            .row= link_to (image_tag @games[i].image.url(:thumb)), tournament_url(@tournament)+game_path(@games[i]), class: "game"
+            .row= link_to @games[i].name, tournament_url(@tournament)+game_path(@games[i]), class: "game"
+            - if !current_user.programs.where(tournament_id: @tournament.id).where(game_id: @games[i].id).exists?
+              .row= link_to 'Subscribe', tournament_url(@tournament)+game_path(@games[i]) + '/subscribe', class: "btn-up btn btn-primary"
+            -else
+              .row= link_to 'Unsubscribe', tournament_url(@tournament)+game_path(@games[i]) + '/unsubscribe', class: "btn-up btn btn-primary"
           - i+=1
   - else
     .col-sm-9 No games to show
 .row
+  .col-sm-12
+    %h1 Users Subscribben :
+- if @users.any?
+  - @users.each do |user|
+    .row
+      .col-sm-5.text-center
+        %h3= link_to user.username, user
+      - user.registrations.each do |r|
+        - if r.program.tournament == @tournament
+          .col-sm-2.text-center
+            = link_to r.program.game.name, tournament_url(@tournament)+game_path(r.program.game), class: "game"
+-else
+  .row
+    .col-sm-12.text-center
+      %h3 No User Subscribed yet
+.row
   .col-xs-2= link_to 'Back', tournaments_path, class: "btn-up btn btn-primary"
   .col-xs-2= link_to 'Add Games', @tournament.id.to_s + "/games/new", class: "btn-up btn btn-primary"
+.void

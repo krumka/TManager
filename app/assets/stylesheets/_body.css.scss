@@ -1,7 +1,12 @@
 @import "variables";
 body {
   font-family: Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 14px;
+  font-size: 16px;
+  overflow-x: hidden;
+}
+p{
+  font-family: Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 16px;
 }
 h1{
   font-weight: 700;
@@ -31,13 +36,11 @@ h2{
   border-radius: 5px;
 }
 a.game, a.tournament{
-  color: $text;
   text-decoration: underline;
   font-weight: bold;
   font-size:1.3em;
 }
 a.game:hover, a.tournament:hover{
-  color: white;
   background-color: transparent;
 }
 a.btn-up.btn.btn-primary{
@@ -70,4 +73,21 @@ a.btn-up.btn.btn-primary{
 }
 .btn-register{
   padding : 30px;
+}
+.form-control-inline {
+  width: 10px;
+  float:left;
+  margin-right: 5px;
+}
+.banner{
+  img{
+    width:100vw;
+  }
+}
+.blur img{
+  filter: blur(2px);
+  -webkit-filter: blur(2px);
+  -moz-filter: blur(2px);
+  -o-filter: blur(2px);
+  -ms-filter: blur(2px);
 }

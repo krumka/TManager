@@ -1,22 +1,42 @@
-%p#notice= notice
-%p
-  %b Username:
-  = @user.username
-%p
-  %b Email:
-  = @user.email
-%p
-  %b Password:
-  = @user.password
-%p
-  %b Adress:
-  = @user.adress
-%p
-  %b Country:
-  = @user.country
-%p
-  %b Role:
-  = @user.role
-= link_to 'Edit', edit_user_path(@user)
-|
-\#{link_to 'Back', users_path}
+.row
+  .col-sm-3
+    = image_tag @user.image.url(:medium), size: "300x300", class: "img-responsive profil-pic img-rounded"
+  .col-sm-4
+    -if @user.username.nil?
+      .row
+        %h1 No username set
+    - else
+      .row
+        %h1= @user.username
+    .row
+      %h3= @user.email
+    -if @user.birthdate.nil?
+      .row
+        %h3 No Birth Date
+    - else
+      .row
+        %h3= @user.birthdate.day.to_s + "/" + @user.birthdate.month.to_s + "/" + @user.birthdate.year.to_s
+  .col-sm-5
+    - if @user.adress.nil? && @user.zip_code.nil? && @user.city.nil? && @user.country.nil?
+      .row
+        %p.col-sm-12 No Address
+    -else
+      - if @user.adress.empty? && @user.zip_code.nil? && @user.city.empty? && @user.country.empty?
+        .row
+          %p.col-sm-12 No Address
+      - else
+        - if @user.adress.empty? || @user.zip_code.nil? || @user.city.empty? || @user.country.empty?
+          .row
+            %p.col-sm-12 Incomplete Address
+        - else
+          .row
+            .col-sm-12
+              %p= @user.adress
+              %p= @user.zip_code.to_s + " " + @user.city
+              %p= @user.country
+.row
+  .col-sm-12
+    .row
+      %h1 Inscriptions
+    .row
+

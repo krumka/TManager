@@ -1,0 +1,15 @@
+= render :layout => "layouts/h1" do
+  Forgot your password?
+.row
+  .col-sm-6.col-sm-offset-3
+    = form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f|
+      = devise_error_messages!
+      .form-group
+        .input-group
+          .input-group-addon
+            %i.fa.fa-envelope{"aria-hidden" => "true"}
+          = f.email_field :email, autofocus: true, placeholder: "Email Address"
+      .actions
+        = f.submit "Send me reset password instructions", class: 'btn btn-primary btn-up'
+.row
+  .col-sm-6.col-sm-offset-3.text-center= render "devise/shared/links"

@@ -15,6 +15,13 @@ class TournamentsController < ApplicationController
   def show
     @tournament = Tournament.find(params[:id])
     @games = @tournament.games
+    @userss = @tournament.users
+    @users = []
+    @userss.each do |user|
+      unless @users.include?(user)
+        @users << user
+      end
+    end
 
     respond_to do |format|
       format.html # show.html.erb

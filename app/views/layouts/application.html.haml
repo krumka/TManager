@@ -19,7 +19,7 @@
             %span.sr-only Toggle navigation
             Menu
             %i.fa.fa-bars
-          = image_tag "logo/TmanagerWhite.svg", options={:class => "img-responsive", :alt => "TManager Logo"}
+          = image_tag "logo/TmanagerWhite.svg", options={:id => "logo", :class => "img-responsive", :alt => "TManager Logo"}
           %a.navbar-brand{:href => "/"} TManager
         #bs-example-navbar-collapse-1.collapse.navbar-collapse
           %ul.nav.navbar-nav.navbar-right
@@ -29,10 +29,12 @@
             - if user_signed_in?
               %li.dropdown
                 %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+                  = image_tag current_user.image.url(:thumb), size: "50x50", class: "profil-pic img-circle"
                   = current_user.username
                   %span.caret
                 %ul.dropdown-menu{:role => "menu"}
-                  %li= link_to 'Profile', edit_user_registration_path
+                  %li= link_to "Profile", current_user
+                  %li= link_to 'Settings', edit_user_registration_path
                   %li= link_to 'Log out', destroy_user_session_path, method: :delete
             - else
               %li= link_to 'Log In', new_user_session_path
@@ -42,6 +44,9 @@
       - flash.each do |key, value|
         %div{:class => "alert alert-#{key}"}
           = value
+      - if user_signed_in?
+        - if current_user.username.nil?
+          .alert.alert-danger Set some username please
     .header
       -if request.env['PATH_INFO'].split("/")[1].nil? && !user_signed_in?
         = render "layouts/header"
@@ -58,3 +63,11 @@
           .row
             .col-lg-12
               Copyright © Rem's I.T. 2017
+    :javascript
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-92603316-1', 'auto');
+      ga('send', 'pageview');

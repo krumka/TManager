@@ -4,18 +4,19 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :confirmable, :lockable, :omniauthable
+         :recoverable, :rememberable, :trackable, :validatable,
+         :confirmable, :lockable,
+         :omniauthable, :omniauth_providers => [:facebook]
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me
-  attr_accessible :adress, :country, :email, :password, :role, :username
+  attr_accessible :uid, :name, :provider, :firstname, :email, :password, :password_confirmation, :remember_me
 
   has_many :registrations
   has_many :programs, through: :registrations
   has_many :games, through: :programs
   has_many :tournaments, through: :programs
 
-  has_attached_file :image
+  has_attached_file :image, styles: { medium: "300x300", thumb: "50x50" }, :default_url => "/images/:style/unknown.jpg"
   validates_attachment_content_type :image, :content_type => ["image/jpg", "image/jpeg", "image/png"]
 
   validates_format_of :email, :without => TEMP_EMAIL_REGEX, on: :update
@@ -44,10 +45,13 @@ class User < ActiveRecord::Base
       # Create the user if it's a new registration
       if user.nil?
         user = User.new(
-            name: auth.extra.raw_info.name,
+            name: auth.info.last_name,
+            firstname: auth.info.first_name,
             #username: auth.info.nickname || auth.uid,
             email: email ? email : "#{TEMP_EMAIL_PREFIX}-#{auth.uid}-#{auth.provider}.com",
-            password: Devise.friendly_token[0,20]
+            password: Devise.friendly_token[0,20],
+            provider: auth.provider,
+            uid: auth.uid
         )
         user.skip_confirmation!
         user.save!
