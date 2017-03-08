@@ -16,6 +16,28 @@ class User < ActiveRecord::Base
   has_many :games, through: :programs
   has_many :tournaments, through: :programs
 
+  geocoded_by :full_address, latitude: :lat, longitude: :lon
+  after_validation :geocode, if: ->(obj){ obj.full_address.present? }
+
+  def full_address
+    if self.adress || self.zip_code || self.city || self.country
+      self.adress + " " + self.zip_code.to_s + " " + self.city + " " + self.country
+    end
+  end
+
+  def age
+    now = Time.now.utc.to_date
+    now.year - self.birthdate.year - ((now.month > self.birthdate.month || (now.month == self.birthdate.month && now.day >= self.birthdate.day)) ? 0 : 1)
+  end
+
+  def is_admin
+    if self.role == 1
+      true
+    else
+      false
+    end
+  end
+
   has_attached_file :image, styles: { medium: "300x300", thumb: "50x50" }, :default_url => "/images/:style/unknown.jpg"
   validates_attachment_content_type :image, :content_type => ["image/jpg", "image/jpeg", "image/png"]
 

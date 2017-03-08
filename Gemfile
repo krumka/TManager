@@ -23,6 +23,8 @@ gem 'strong_parameters'
 gem 'oa-core'
 gem 'oa-openid', :require => 'omniauth/openid'
 
+gem 'geocoder'
+
 gem 'jquery-turbolinks'
 
 gem 'delayed_job_active_record'

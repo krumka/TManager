@@ -22,6 +22,9 @@ class TournamentsController < ApplicationController
         @users << user
       end
     end
+    if @tournament.lat.nil? || @tournament.lon.nil?
+      @tournament.geocode
+    end
 
     respond_to do |format|
       format.html # show.html.erb

@@ -4,23 +4,44 @@
 .row.title-page
   .col-sm-9
     %h1= @tournament.name
-  .col-sm-3
+  .col-sm-1
     = link_to 'Edit', edit_tournament_path(@tournament), class: "btn-up btn btn-primary"
+  .col-sm-2
+    = link_to 'Destroy', @tournament, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-up btn btn-danger"
 .row
-  %b.col-sm-3 Date :
-  .col-sm-9= @tournament.date.day.to_s + "/" + @tournament.date.month.to_s + "/" + @tournament.date.year.to_s
+  %b.col-sm-3
+    Date :
+    - if current_user
+      -if current_user.is_admin
+        (Now : #{DateTime.now.strftime("%d of %B %Y at %I:%M %p")})
+  .col-sm-9
+    = @tournament.date.strftime("%d of %B %Y at %I:%M %p")
 .row
   %b.col-sm-3 Location :
   .col-sm-9= @tournament.adress
 .row
+  .col-sm-6.col-sm-offset-3= image_tag "http://maps.googleapis.com/maps/api/staticmap?center=#{@tournament.lat},#{@tournament.lon}&markers=#{@tournament.lat},#{@tournament.lon}&zoom=15&size=640x400&key=AIzaSyCxx0C2tXwgtwpc1l8iCR4ZlQQ_029RKVw",
+              class: 'img-fluid img-rounded', alt: "#{@tournament.name} on the map"
+- if current_user
+  .row
+    .col-sm-6.col-sm-offset-3= @tournament.distance_from(current_user.to_coordinates).round(2).to_s + " km away from you"
+.row
   %b.col-sm-3 Description :
-  .col-sm-9= @tournament.description
+  .col-sm-9
+    %pre= @tournament.description
 .row
   %b.col-sm-3 Gamers max:
   .col-sm-9= @tournament.max_gamers
 .row
   .col-sm-12
     %h1 Games :
+.row
+  .col-sm-12
+    -if (@tournament.date - 2.days) > DateTime.now
+      Subscriptions are ending the
+      =(@tournament.date - 2.days).strftime("%d of %B %Y at %I:%M %p")
+    -else
+      Subscriptions are ended
 .row
   - if @games.any?
     %br/
@@ -32,10 +53,11 @@
           .col-md-3.text-center.game
             .row= link_to (image_tag @games[i].image.url(:thumb)), tournament_url(@tournament)+game_path(@games[i]), class: "game"
             .row= link_to @games[i].name, tournament_url(@tournament)+game_path(@games[i]), class: "game"
-            - if !current_user.programs.where(tournament_id: @tournament.id).where(game_id: @games[i].id).exists?
-              .row= link_to 'Subscribe', tournament_url(@tournament)+game_path(@games[i]) + '/subscribe', class: "btn-up btn btn-primary"
-            -else
-              .row= link_to 'Unsubscribe', tournament_url(@tournament)+game_path(@games[i]) + '/unsubscribe', class: "btn-up btn btn-primary"
+            -unless (@tournament.date - 2.days) < DateTime.now
+              - if !current_user.programs.where(tournament_id: @tournament.id).where(game_id: @games[i].id).exists?
+                .row= link_to 'Subscribe', tournament_url(@tournament)+game_path(@games[i]) + '/subscribe', class: "btn-up btn btn-primary"
+              -else
+                .row= link_to 'Unsubscribe', tournament_url(@tournament)+game_path(@games[i]) + '/unsubscribe', class: "btn-up btn btn-primary"
           - i+=1
   - else
     .col-sm-9 No games to show
@@ -51,6 +73,7 @@
         - if r.program.tournament == @tournament
           .col-sm-2.text-center
             = link_to r.program.game.name, tournament_url(@tournament)+game_path(r.program.game), class: "game"
+    %hr/
 -else
   .row
     .col-sm-12.text-center

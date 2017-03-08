@@ -12,6 +12,7 @@
   .row.text-center
     - @games.each do |game|
       .col-sm-4.title
+        %p= link_to (image_tag game.image.url(:thumb)), game_path(game), class: "game"
         %p.game= link_to game.name, game
         %p= "Added : " + game.created_at.day.to_s + "/" + game.created_at.month.to_s + "/" + game.created_at.year.to_s
 %section.tournament_home

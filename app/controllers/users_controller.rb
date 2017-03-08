@@ -10,7 +10,12 @@ class UsersController < ApplicationController
 
   def show
     # authorize! :read, @user
-    respond_with(@user)
+    @user = User.find(params[:id])
+    if @user.lat.nil? || @user.lon.nil?
+      @user.geocode
+    end
+    @tournaments = @user.tournaments
+    @games = @user.games
   end
 
   def new
@@ -37,6 +42,7 @@ class UsersController < ApplicationController
     @user.zip_code = params[:user][:zip_code]
     @user.city = params[:user][:city]
     @user.country = params[:user][:country]
+    @user.geocode
     @user.image = params[:user][:image]
     if params[:user][:role]
       @user.role = params[:user][:role]
@@ -77,20 +83,28 @@ class UsersController < ApplicationController
   end
 
   def subscribe
-    if !current_user.programs.where(tournament_id: params[:tournament_id]).where(game_id: params[:game_id]).exists?
-      current_user.programs << Program.where(tournament_id: params[:tournament_id]).where(game_id: params[:game_id])
-      redirect_to Tournament.find(params[:tournament_id]), notice: 'You successfully subscribed to ' + Game.find(params[:game_id]).name + ' on ' + Tournament.find(params[:tournament_id]).name + ' tournament.'
+    if (Tournament.find(params[:tournament_id]).date - 2.days) < DateTime.now
+      redirect_to Tournament.find(params[:tournament_id]), notice: 'The subscriptions for this tournament are over'
     else
-      redirect_to Tournament.find(params[:tournament_id]), warning: 'You already subscribed to ' + Game.find(params[:game_id]).name + ' on ' + Tournament.find(params[:tournament_id]).name + ' tournament.'
+      if !current_user.programs.where(tournament_id: params[:tournament_id]).where(game_id: params[:game_id]).exists?
+        current_user.programs << Program.where(tournament_id: params[:tournament_id]).where(game_id: params[:game_id])
+        redirect_to Tournament.find(params[:tournament_id]), notice: 'You successfully subscribed to ' + Game.find(params[:game_id]).name + ' on ' + Tournament.find(params[:tournament_id]).name + ' tournament.'
+      else
+        redirect_to Tournament.find(params[:tournament_id]), notice: 'You already subscribed to ' + Game.find(params[:game_id]).name + ' on ' + Tournament.find(params[:tournament_id]).name + ' tournament.'
+      end
     end
   end
 
   def unsubscribe
-    if current_user.programs.where(tournament_id: params[:tournament_id]).where(game_id: params[:game_id]).exists?
-      current_user.programs.delete(Program.where(tournament_id: params[:tournament_id]).where(game_id: params[:game_id]))
-      redirect_to Tournament.find(params[:tournament_id]), notice: 'You successfully unsubscribed to ' + Game.find(params[:game_id]).name + ' on ' + Tournament.find(params[:tournament_id]).name + ' tournament.'
+    if (Tournament.find(params[:tournament_id]).date - 2.days) < DateTime.now
+      redirect_to Tournament.find(params[:tournament_id]), notice: 'The subscriptions for this tournament are over'
     else
-      redirect_to Tournament.find(params[:tournament_id]), warning: 'You already unsubscribed to ' + Game.find(params[:game_id]).name + ' on ' + Tournament.find(params[:tournament_id]).name + ' tournament.'
+      if current_user.programs.where(tournament_id: params[:tournament_id]).where(game_id: params[:game_id]).exists?
+        current_user.programs.delete(Program.where(tournament_id: params[:tournament_id]).where(game_id: params[:game_id]))
+        redirect_to Tournament.find(params[:tournament_id]), notice: 'You successfully unsubscribed to ' + Game.find(params[:game_id]).name + ' on ' + Tournament.find(params[:tournament_id]).name + ' tournament.'
+      else
+        redirect_to Tournament.find(params[:tournament_id]), notice: 'You already unsubscribed to ' + Game.find(params[:game_id]).name + ' on ' + Tournament.find(params[:tournament_id]).name + ' tournament.'
+      end
     end
   end
 

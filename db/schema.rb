@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20170301124852) do
+ActiveRecord::Schema.define(:version => 20170306135902) do
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0, :null => false
@@ -89,6 +89,8 @@ ActiveRecord::Schema.define(:version => 20170301124852) do
     t.integer  "max_gamers"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+    t.float    "lat"
+    t.float    "lon"
   end
 
   create_table "users", :force => true do |t|
@@ -127,6 +129,8 @@ ActiveRecord::Schema.define(:version => 20170301124852) do
     t.string   "provider"
     t.string   "uid"
     t.date     "birthdate"
+    t.float    "lon"
+    t.float    "lat"
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true

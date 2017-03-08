@@ -15,7 +15,7 @@
         %h3 No Birth Date
     - else
       .row
-        %h3= @user.birthdate.day.to_s + "/" + @user.birthdate.month.to_s + "/" + @user.birthdate.year.to_s
+        %h3= @user.age.to_s + " years old  -  " + @user.birthdate.day.to_s + "/" + @user.birthdate.month.to_s + "/" + @user.birthdate.year.to_s
   .col-sm-5
     - if @user.adress.nil? && @user.zip_code.nil? && @user.city.nil? && @user.country.nil?
       .row
@@ -34,9 +34,19 @@
               %p= @user.adress
               %p= @user.zip_code.to_s + " " + @user.city
               %p= @user.country
+          .row
+            .col-sm-12= image_tag "http://maps.googleapis.com/maps/api/staticmap?center=#{@user.lat},#{@user.lon}&markers=#{@user.lat},#{@user.lon}&zoom=15&size=400x200&key=AIzaSyCxx0C2tXwgtwpc1l8iCR4ZlQQ_029RKVw",
+              class: 'img-fluid img-rounded', alt: "#{@user.name} on the map"
 .row
   .col-sm-12
     .row
       %h1 Inscriptions
-    .row
-
+    - if @tournaments.nil?
+      .row
+        %h3.col-xs-offset-1 No tournaments
+    - else
+      - @tournaments.size.times do |i|
+        .row
+          .col-sm-3= @tournaments[i].name
+          .col-sm-3= @games[i].name
+          %hr/

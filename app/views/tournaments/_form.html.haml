@@ -7,29 +7,30 @@
       %ul
         - @tournament.errors.full_messages.each do |msg|
           %li= msg
-  .field
-    = f.label :name
-    %br/
-    = f.text_field :name
-  .field
-    = f.label :adress
-    %br/
-    = f.text_field :adress
-  .field
-    = f.label :description
-    %br/
-    = f.text_area :description
-  .field
-    = f.label :date
-    %br/
-    = f.datetime_select :date
-  .field
-    = f.label :max_gamers
-    %br/
-    = f.number_field :max_gamers
-  .field
-    = f.label :games
-    %br/
-    =select_tag "Games", options_from_collection_for_select(@games, "id", "name")
+  .form-group
+    .input-group
+      .input-group-addon
+        %i.fa.fa-tag{"aria-hidden" => "true"}
+      = f.text_field :name, class: "form-control", placeholder: "Name"
+  .form-group
+    .input-group
+      .input-group-addon
+        %i.fa.fa-map-marker{"aria-hidden" => "true"}
+      = f.text_field :adress, class: "form-control", placeholder: "Address"
+  .form-group
+    .input-group
+      .input-group-addon
+        %i.fa.fa-align-left{"aria-hidden" => "true"}
+      = f.text_area :description, class: "form-control", placeholder: "Description"
+  .form-group
+    .input-group
+      .input-group-addon
+        %i.fa.fa-calendar{"aria-hidden" => "true"}
+      = f.datetime_select :date, class: "form-control", placeholder: "Date", with_css_classes:"form-control"
+  .form-group
+    .input-group
+      .input-group-addon
+        %i.fa.fa-calculator{"aria-hidden" => "true"}
+      = f.number_field :max_gamers, class: "form-control", placeholder: "Max. Gamers"
   .actions
-    = f.submit
+    = f.submit "Send", class: "btn btn-primary"

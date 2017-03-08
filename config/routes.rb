@@ -1,5 +1,8 @@
 Tmanager::Application.routes.draw do
 
+  resources :matches
+
+
   devise_for :users, :controllers => { registrations: 'registrations', :omniauth_callbacks => 'omniauth_callbacks' }
   match '/users/:id/finish_signup' => 'users#finish_signup', via: [ :get, :put], :as => :finish_signup
 
