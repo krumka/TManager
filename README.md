@@ -1,4 +1,4 @@
-# TManager ![TManager Logo](http://tmanager.lambre.me/assets/logo/Tmanager.png)
+# TManager ![TManager Logo](http://tmanager.lambre.me/assets/logo/Tmanagerfull.png)
 
 If you want to follow the progression on the interface click on [this link](http://tmanager.lambre.me)
 
