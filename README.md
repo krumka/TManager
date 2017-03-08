@@ -1,4 +1,4 @@
-![TManager Logo](/krumka/TManager/blob/master/app/assets/images/logo/Tmanagerfull.svg)
+# TManager ![TManager Logo](http://tmanager.lambre.me/assets/logo/Tmanager.png)
 
 If you want to follow the progression on the interface click on [this link](http://tmanager.lambre.me)
 
