@@ -1,6 +1,41 @@
 class ApplicationController < ActionController::Base
+  #rescue_from Exception,
+  #            :with => :render_error
+  rescue_from ActionController::RoutingError,
+              :with => :render_not_found
+  rescue_from ActionController::UnknownController,
+              :with => :render_not_found
+  rescue_from AbstractController::ActionNotFound,
+              :with => :render_not_found
+  rescue_from ActiveRecord::RecordNotFound,
+              :with => :render_not_found
+  rescue_from CanCan::AccessDenied do |exception|
+    if Rails.env.development?
+      redirect_to root_path, :alert => "Error 401 - " + exception.message +
+          "\nAction : " + request.params[:action] +
+          "\nController : " + request.params[:controller]
+    else
+      render "errors/unauthorized"
+    end
+  end
   before_filter :ensure_signup_complete, only: [:new, :create, :update, :destroy]
 
+  def render_not_found(exception)
+    if Rails.env.development?
+      redirect_to root_path, :alert => "Error 404 - " + exception.message
+    else
+      render  "errors/404", :status => 404
+    end
+  end
+  def routing_error
+      render "errors/404route", :status => 404
+  end
+
+  def render_error(exception)
+    if !Rails.env.development?
+      render "errors/500", :status => 500
+    end
+  end
   def ensure_signup_complete
     # Ensure we don't go into an infinite loop
     return if action_name == 'finish_signup'

@@ -1,0 +1,15 @@
+.row.title-page
+  .col-sm-9
+    %h1 Ranking Users
+- place = 0
+- @users.each do |u|
+  - place += 1
+  .row
+    %table.col-xs-12.table
+      %tr
+        %td
+          %h3= place
+        %td
+          %h3= link_to u.username, u
+        %td
+          %h3= u.points.to_s + " Points"

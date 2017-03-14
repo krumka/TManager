@@ -48,6 +48,10 @@ nav.navbar {
     height:90px;
     float: left;
   }
+  .profil-pic{
+    -webkit-transition: all 0.4s linear;
+    transition: all 0.4s linear;
+  }
 }
 nav.navbar.shrink {
   min-height: 52px;
@@ -61,6 +65,10 @@ nav.navbar.shrink {
   #logo{
     height: 50px;
     top:1px;
+  }
+  .profil-pic{
+    height:30px;
+    width:30px;
   }
 }
 #marginn{

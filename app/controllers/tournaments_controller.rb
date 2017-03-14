@@ -2,7 +2,8 @@ class TournamentsController < ApplicationController
   # GET /tournaments
   # GET /tournaments.json
   def index
-    @tournaments = Tournament.order(:date).all
+    @tournaments_to_come = Tournament.order(:date).where("date > ?", DateTime.now)
+    @tournaments_past = Tournament.order("date DESC").where("date < ?", DateTime.now)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -35,6 +36,8 @@ class TournamentsController < ApplicationController
   # GET /tournaments/new
   # GET /tournaments/new.json
   def new
+    authorize! :new, Tournament
+
     @tournament = Tournament.order(:date).new
     @games = Game.all
 
@@ -46,6 +49,8 @@ class TournamentsController < ApplicationController
 
   # GET /tournaments/1/edit
   def edit
+    authorize! :edit, Tournament
+
     @tournament = Tournament.find(params[:id])
     @games = Game.all
   end
@@ -53,6 +58,8 @@ class TournamentsController < ApplicationController
   # POST /tournaments
   # POST /tournaments.json
   def create
+    authorize! :create, Tournament
+
     @tournament = Tournament.new(params[:tournament])
 
     respond_to do |format|
@@ -66,9 +73,18 @@ class TournamentsController < ApplicationController
     end
   end
 
+  def set_scores
+    authorize! :edit, Match
+
+    @tournament = Tournament.find(params[:tournament_id])
+    @matches = @tournament.matches
+  end
+
   # PUT /tournaments/1
   # PUT /tournaments/1.json
   def update
+    authorize! :update, Tournament
+
     @tournament = Tournament.find(params[:id])
 
     respond_to do |format|
@@ -85,6 +101,8 @@ class TournamentsController < ApplicationController
   # DELETE /tournaments/1
   # DELETE /tournaments/1.json
   def destroy
+    authorize! :destroy, Tournament
+
     @tournament = Tournament.find(params[:id])
     @tournament.destroy
 
@@ -92,5 +110,12 @@ class TournamentsController < ApplicationController
       format.html { redirect_to tournaments_url, notice: 'Tournament is deleted' }
       format.json { head :no_content }
     end
+  end
+  def generate_matches
+    authorize! :edit, Tournament
+    authorize! :create, Match
+
+    @tournament = Tournament.find(params[:tournament_id])
+    redirect_to @tournament, notice: @tournament.generate_matches
   end
 end

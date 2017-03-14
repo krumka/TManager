@@ -2,12 +2,19 @@
   .blur= image_tag "gamer_table.JPG", style: "width: 100%;top:100px;left:0;"
 
 .row.title-page
-  .col-sm-9
+  .col-sm-5
     %h1= @tournament.name
-  .col-sm-1
-    = link_to 'Edit', edit_tournament_path(@tournament), class: "btn-up btn btn-primary"
-  .col-sm-2
-    = link_to 'Destroy', @tournament, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-up btn btn-danger"
+  - if can? :update, Tournament
+    .col-sm-2
+      = link_to 'Edit', edit_tournament_path(@tournament), class: "btn-up btn btn-primary"
+  - if can? :destroy, Tournament
+    .col-sm-2
+      = link_to 'Destroy', @tournament, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-up btn btn-danger"
+  - if can? :create, Match
+    - if (@tournament.date - 2.days) < DateTime.now && @tournament.date > DateTime.now
+      - if !@tournament.matches.any?
+        .col-sm-3
+          = link_to 'Generate Matches', tournament_url(@tournament) + "/generate_matches", class: "btn-up btn btn-success"
 .row
   %b.col-sm-3
     Date :
@@ -35,13 +42,14 @@
 .row
   .col-sm-12
     %h1 Games :
-.row
-  .col-sm-12
-    -if (@tournament.date - 2.days) > DateTime.now
-      Subscriptions are ending the
-      =(@tournament.date - 2.days).strftime("%d of %B %Y at %I:%M %p")
-    -else
-      Subscriptions are ended
+- if can? :subscribe, Tournament
+  .row
+    .col-sm-12
+      -if (@tournament.date - 2.days) > DateTime.now
+        Subscriptions are ending the
+        =(@tournament.date - 2.days).strftime("%d of %B %Y at %I:%M %p")
+      -else
+        Subscriptions are ended
 .row
   - if @games.any?
     %br/
@@ -53,11 +61,12 @@
           .col-md-3.text-center.game
             .row= link_to (image_tag @games[i].image.url(:thumb)), tournament_url(@tournament)+game_path(@games[i]), class: "game"
             .row= link_to @games[i].name, tournament_url(@tournament)+game_path(@games[i]), class: "game"
-            -unless (@tournament.date - 2.days) < DateTime.now
-              - if !current_user.programs.where(tournament_id: @tournament.id).where(game_id: @games[i].id).exists?
-                .row= link_to 'Subscribe', tournament_url(@tournament)+game_path(@games[i]) + '/subscribe', class: "btn-up btn btn-primary"
-              -else
-                .row= link_to 'Unsubscribe', tournament_url(@tournament)+game_path(@games[i]) + '/unsubscribe', class: "btn-up btn btn-primary"
+            - if can? :subscribe, Tournament
+              -unless (@tournament.date - 2.days) < DateTime.now
+                - if !current_user.programs.where(tournament_id: @tournament.id).where(game_id: @games[i].id).exists?
+                  .row= link_to 'Subscribe', tournament_url(@tournament)+game_path(@games[i]) + '/subscribe', class: "btn-up btn btn-primary"
+                -else
+                  .row= link_to 'Unsubscribe', tournament_url(@tournament)+game_path(@games[i]) + '/unsubscribe', class: "btn-up btn btn-primary"
           - i+=1
   - else
     .col-sm-9 No games to show
@@ -78,7 +87,39 @@
   .row
     .col-sm-12.text-center
       %h3 No User Subscribed yet
+- if @tournament.matches
+  - if @tournament.matches.any?
+    .row
+      .col-sm-8
+        %h1 Matches :
+      - if can? :update, Match
+        .col-sm-4
+          =link_to "Set Scores", tournament_url(@tournament) + "/set_scores", class: "btn btn-up btn-success"
+    .row.bold.text-center
+      .col-sm-3
+        Game
+      .col-sm-3
+        Player 1
+      .col-sm-3
+        Player 2
+      .col-sm-3
+        Score
+    %hr/
+    - @tournament.matches.order(:program_id).each do |match|
+      .row.text-center
+        .col-sm-3
+          = match.games.first.name
+        .col-sm-3
+          = match.player1.username
+        .col-sm-3
+          = match.player2.username
+        .col-sm-3
+          = match.score
+          - if can? :update, Match
+            = link_to 'Set Score', edit_match_path(match), class: "btn-up btn btn-success"
+      %hr/
 .row
   .col-xs-2= link_to 'Back', tournaments_path, class: "btn-up btn btn-primary"
-  .col-xs-2= link_to 'Add Games', @tournament.id.to_s + "/games/new", class: "btn-up btn btn-primary"
+  - if can? :update, Tournament
+    .col-xs-2= link_to 'Add Games', @tournament.id.to_s + "/games/new", class: "btn-up btn btn-primary"
 .void

@@ -1,20 +1,31 @@
 -if @tournament.nil?
-  %h1 New game
-  = render 'form'
-  = link_to 'Back', games_path
+  .row
+    %h1.col-xs-12 New game
+  .row
+    .col-xs-12= render 'form'
+  .row
+    .col-xs-12= link_to 'Back', games_path
 -else
-  %h1 Add Games to the tournament
-  %h2= "Current games in " + @tournament.name
+  .row
+    %h1.col-xs-12 Add Games to the tournament
+  .row
+    %h2.col-xs-12= "Current games in " + @tournament.name
   - if @games.nil?
-    %h3 No games added yet
-  %ul
+    .row
+      %h3.col-xs-12 No games added yet
+  .row
     - @games.each do |game|
-      %p.game
-        = link_to game.name, game
-        = link_to "Delete", tournaments_path + "/" + @tournament.id.to_s + games_path + "/" + game.id.to_s + "/delete", id: "delete_game", class: "btn btn-primary btn-up", style: "margin-left: 20px;text-decoration: none;"
+      %p.game.row
+        .col-xs-6= link_to game.name, game
+        .col-xs-6= link_to "Delete", tournaments_path + "/" + @tournament.id.to_s + games_path + "/" + game.id.to_s + "/delete", id: "delete_game", class: "btn btn-primary btn-up", style: "margin-left: 20px;text-decoration: none;"
   -if (Game.all - @games).any?
-    =select_tag "Games", options_from_collection_for_select(Game.all - @games, "id", "name")
-    %a.btn.btn-up.btn-primary#addGame2Tournament Add
+    %hr/
+    .row
+      .col-xs-4=select_tag "Games", options_from_collection_for_select(Game.all - @games, "id", "name")
+      %a.col-xs-3.btn.btn-up.btn-primary#addGame2Tournament Add
   -else
-    %h3 No more games to add
-    .col-sm-3= link_to 'Add Game', new_game_path, class: "btn-up btn btn-primary"
+    .row
+      .col-sm-5%h3 No more games to add
+      .col-sm-3= link_to 'Add Game', new_game_path, class: "btn-up btn btn-primary"
+  .row
+    .col-sm-3= link_to 'Go back to the tournament', @tournament, class: "btn-up btn btn-primary"

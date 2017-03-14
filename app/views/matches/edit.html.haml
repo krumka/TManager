@@ -1,0 +1,35 @@
+.row.title-page
+  .col-sm-5
+    %h1 Editing Score
+  .col-sm-2
+    = link_to 'Show', @match, class: "btn-up btn btn-primary"
+.row
+  %h2.col-sm-6.col-sm-offset-3.text-center
+    = @match.player1.username + " vs " + @match.player2.username
+  .col-sm-12
+    = form_for(@match) do |f|
+      - if @match.errors.any?
+        #error_explanation
+          %h2
+            = pluralize(@match.errors.count, "error")
+            prohibited this match from being saved:
+          %ul
+            - @match.errors.full_messages.each do |msg|
+              %li= msg
+      .row
+        .col-sm-4.col-sm-offset-1.col-lg-2.col-lg-offset-3
+          .form-group
+            .input-group
+              .input-group-addon
+                %i.fa.fa-tag{"aria-hidden" => "true"}
+              = f.number_field :player1_score, class: "form-control", placeholder: "Score Player 1"
+        .col-sm-2
+          .big.text-center -
+        .col-sm-4.col-lg-2
+          .form-group
+            .input-group
+              .input-group-addon
+                %i.fa.fa-tag{"aria-hidden" => "true"}
+              = f.number_field :player2_score, class: "form-control", placeholder: "Score Player 2"
+      .actions.text-center
+        = f.submit "Set Score", class: "btn btn-up btn-success"

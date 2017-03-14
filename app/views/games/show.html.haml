@@ -1,10 +1,14 @@
 - if !@game.image.url(:medium).empty?
   .banner= image_tag @game.image.url(:medium), class: "img-responsive img-rounded"
 .row.title-page
-  .col-sm-9
+  .col-sm-6
     %h1= @game.name
-  .col-sm-3
-    = link_to 'Edit', edit_game_path(@game), class: "btn-up btn btn-primary"
+  - if can? :edit, Game
+    .col-sm-3
+      = link_to 'Edit', edit_game_path(@game), class: "btn-up btn btn-primary"
+  - if can? :destroy, Game
+    .col-sm-3
+      = link_to 'Destroy', @game, method: :delete, class: "btn-up btn btn-danger"
 .row
   %b.col-sm-3.text-center Game type :
   .col-sm-9= @game.game_type
@@ -13,6 +17,6 @@
   .col-sm-9= @game.platform
 .row
   %b.col-sm-3.text-center Description :
-  .col-sm-9= @game.description
+  %pre.col-sm-9= @game.description
 .row
   = link_to 'Back', games_path, class: "btn-up btn btn-primary"

@@ -14,7 +14,7 @@
           .col-sm-4
             %h4.text-center= f.label :image, "Avatar : "
           .col-sm-8
-            = f.file_field :image
+            = f.file_field :image, class: "form-control filestyle"
         -if current_user.image.exists?
           .row
             .col-sm-4
@@ -99,6 +99,4 @@
   .col-sm-6.col-sm-offset-3
     %h2
       Unhappy?
-      = button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, class: 'btn btn-primary'
-.row
-  .col-sm-6.col-sm-offset-3.text-center= render "devise/shared/links"
+      = button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, class: 'btn btn-danger'

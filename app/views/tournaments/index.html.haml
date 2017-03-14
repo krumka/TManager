@@ -1,13 +1,34 @@
 .row.title-page
   %h1.col-sm-9 Listing tournaments
-  .col-sm-1= link_to 'New Tournament', new_tournament_path, class: "btn-up btn btn-primary"
-
-- @tournaments.each do |t|
+  - if can? :create, Tournament
+    .col-sm-1= link_to 'New Tournament', new_tournament_path, class: "btn-up btn btn-primary"
+.row
+  %h1.col-xs-12 To Come
+- @tournaments_to_come.each do |t|
   .row.tournament.text-center
     .col-xs-12
       .row
         .col-sm-8.title= link_to t.name, t
-        .col-sm-2= link_to 'Destroy', t, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-up btn btn-danger"
+        - if can? :destroy, Tournament
+          .col-sm-2= link_to 'Destroy', t, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-up btn btn-danger"
+        .col-sm-2.date= t.date.day.to_s + "/" + t.date.month.to_s + "/" + t.date.year.to_s
+      .row
+        -i=0
+        - (t.games.size / 4 + 1).times do |row|
+          .row
+          - 4.times do |col|
+            -if !t.games[i].nil?
+              .col-xs-3.text-center.game= link_to t.games[i].name, t.games[i], class: "game"
+              - i+=1
+.row
+  %h1.col-xs-12 Over
+- @tournaments_past.each do |t|
+  .row.tournament.text-center
+    .col-xs-12
+      .row
+        .col-sm-8.title= link_to t.name, t
+        - if can? :destroy, Tournament
+          .col-sm-2= link_to 'Destroy', t, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-up btn btn-danger"
         .col-sm-2.date= t.date.day.to_s + "/" + t.date.month.to_s + "/" + t.date.year.to_s
       .row
         -i=0

@@ -29,6 +29,8 @@ class GamesController < ApplicationController
   # GET /games/new
   # GET /games/new.json
   def new
+    authorize! :new, Game
+
     if params[:tournament_id].nil?
       @game = Game.new
     else
@@ -44,12 +46,16 @@ class GamesController < ApplicationController
 
   # GET /games/1/edit
   def edit
+    authorize! :edit, Game
+
     @game = Game.find(params[:id])
   end
 
   # POST /games
   # POST /games.json
   def create
+    authorize! :create, Game
+
     @game = Game.new(params[:game])
 
     respond_to do |format|
@@ -66,6 +72,8 @@ class GamesController < ApplicationController
   # PUT /games/1
   # PUT /games/1.json
   def update
+    authorize! :update, Game
+
     @game = Game.find(params[:id])
 
     respond_to do |format|
@@ -82,6 +90,8 @@ class GamesController < ApplicationController
   # DELETE /games/1
   # DELETE /games/1.json
   def destroy
+    authorize! :destroy, Game
+
     @game = Game.find(params[:id])
     @game.destroy
 
@@ -92,11 +102,15 @@ class GamesController < ApplicationController
   end
 
   def add_to_tournament
+    authorize! :edit, Tournament
+
     Tournament.find(params[:tournament_id]).games << Game.find(params[:game_id])
     redirect_to "/tournaments/" + params[:tournament_id] + "/games/new", notice: 'Game added to the tournament'
   end
 
   def del_from_tournament
+    authorize! :edit, Tournament
+
     Tournament.find(params[:tournament_id]).games.delete(Game.find(params[:game_id]))
     redirect_to "/tournaments/" + params[:tournament_id] + "/games/new", notice: 'Game deleted from the tournament'
   end

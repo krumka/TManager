@@ -16,6 +16,14 @@
     - else
       .row
         %h3= @user.age.to_s + " years old  -  " + @user.birthdate.day.to_s + "/" + @user.birthdate.month.to_s + "/" + @user.birthdate.year.to_s
+    .row
+      - if !@user.points.nil?
+        %h3= @user.points.to_s + " Points"
+      -else
+        %h3 No points yet
+    - if current_user
+      -if current_user.is_admin
+        .row= link_to "Calculate Points", "/users/" + params[:id].to_s + "/calculate_points", class: "btn-up btn btn-success"
   .col-sm-5
     - if @user.adress.nil? && @user.zip_code.nil? && @user.city.nil? && @user.country.nil?
       .row
@@ -40,13 +48,59 @@
 .row
   .col-sm-12
     .row
-      %h1 Inscriptions
-    - if @tournaments.nil?
+      %h1 Subscriptions
+    - if @subscriptions.nil?
       .row
-        %h3.col-xs-offset-1 No tournaments
+        %h3.col-xs-offset-1 No Subscriptions Yet
     - else
-      - @tournaments.size.times do |i|
-        .row
-          .col-sm-3= @tournaments[i].name
-          .col-sm-3= @games[i].name
-          %hr/
+      - @subscriptions.each do |program|
+        -if program.tournament.date > DateTime.now
+          .row
+            .col-sm-3= program.tournament.date.strftime("%d-%m-%Y %I:%M %p")
+            .col-sm-3= program.tournament.name
+            .col-sm-3= program.game.name
+            %hr/
+.row
+  .col-sm-12
+    %h1 Matches
+- @matches.each do |match|
+  .row.text-center
+    .col-sm-3
+      = match.games.first.name
+    .col-sm-3
+      = match.player1.username
+    .col-sm-3
+      = match.player2.username
+    .col-sm-3
+      = match.score
+      - if can? :update, Match
+        = link_to 'Set Score', edit_match_path(match), class: "btn-up btn btn-success"
+    %hr/
+.row
+  .col-sm-12
+    %h1 Stats
+- if (@user.nb_victory.nil? && @user.nb_defeat.nil?)
+  .row
+    %h3.col-sm-3 No Stats yet
+-else
+  %table.table
+    %tr
+      %td
+        %h3.col-sm-3 Match Played
+      %td
+        %h2.col-sm-3=@user.nb_victory + @user.nb_defeat
+    %tr
+      %td
+        %h3.col-sm-3 Victories
+      %td
+        %h2.col-sm-3=@user.nb_victory
+    %tr
+      %td
+        %h3.col-sm-3 Defeats
+      %td
+        %h2.col-sm-3=@user.nb_defeat
+    %tr
+      %td
+        %h3.col-sm-3 Victory Ratio
+      %td
+        %h2.col-sm-3= (100/(@user.nb_victory + @user.nb_defeat)*@user.nb_victory).to_s + "%"

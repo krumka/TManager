@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20170306135902) do
+ActiveRecord::Schema.define(:version => 20170313144250) do
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0, :null => false
@@ -63,6 +63,16 @@ ActiveRecord::Schema.define(:version => 20170306135902) do
   end
 
   add_index "identities", ["user_id"], :name => "index_identities_on_user_id"
+
+  create_table "matches", :force => true do |t|
+    t.integer  "program_id"
+    t.integer  "player1_id"
+    t.integer  "player1_score"
+    t.integer  "player2_id"
+    t.integer  "player2_score"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
 
   create_table "programs", :force => true do |t|
     t.integer  "game_id"
@@ -131,6 +141,9 @@ ActiveRecord::Schema.define(:version => 20170306135902) do
     t.date     "birthdate"
     t.float    "lon"
     t.float    "lat"
+    t.integer  "points"
+    t.integer  "nb_victory"
+    t.integer  "nb_defeat"
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true

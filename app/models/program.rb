@@ -4,4 +4,5 @@ class Program < ActiveRecord::Base
   # attr_accessible :title, :body
   has_many :registrations
   has_many :users, through: :registrations
+  has_many :matches
 end

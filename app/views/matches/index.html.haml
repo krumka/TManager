@@ -1,0 +1,20 @@
+.row
+  .col-sm-12
+    %h1 Listing matches
+.row
+  .col-sm-12
+    %table.table
+      %tr
+        %th Player1
+        %th Player2
+        %th Score
+        %th
+        %th
+        %th
+      - @matches.each do |match|
+        %tr
+          %td= match.player1.username
+          %td= match.player2.username
+          %td= match.score
+          %td= link_to 'Show', match, class: "btn-up btn btn-primary"
+          %td= link_to 'Set Score', edit_match_path(match), class: "btn-up btn btn-warning"

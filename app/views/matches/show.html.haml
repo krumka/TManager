@@ -1,0 +1,15 @@
+.row.title-page
+  .col-sm-5
+    %h1 Score for #{@match.games.first.name}
+  .col-sm-2
+    = link_to 'Tournament', @match.tournaments.first, class: "btn-up btn btn-success"
+  .col-sm-2
+    = link_to 'Game', @match.games.first, class: "btn-up btn btn-success"
+  .col-sm-2
+    = link_to 'Set Score', edit_match_path(@match), class: "btn-up btn btn-warning"
+.row
+  %h2.col-sm-6.col-sm-offset-3.text-center
+    = @match.player1.username + " vs " + @match.player2.username
+.row
+  %h2.col-sm-6.col-sm-offset-3.text-center
+    = @match.score

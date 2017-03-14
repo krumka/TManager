@@ -24,10 +24,6 @@
     %br/
     = f.text_field :email
   .field
-    = f.label :password
-    %br/
-    = f.text_field :password
-  .field
     = f.label :adress
     %br/
     = f.text_field :adress
@@ -47,7 +43,7 @@
     = f.label :image
     %br/
     = f.file_field :image
-  .field
+  .field.hidden
     = f.label :role
     %br/
     = f.number_field :role
@@ -58,6 +54,4 @@
           :end_year => 100.years.ago.year, :start_year => 16.years.ago.year,
           prompt: { day: 'Day', month: 'Month', year: 'Year' }
   .actions
-    = f.submit
-
-@user.birthdate
+    = f.submit "Submit", class: "btn btn-up btn-primary"

@@ -1,10 +1,10 @@
 class CreateMatches < ActiveRecord::Migration
   def change
     create_table :matches do |t|
-      t.integer :program_id
-      t.integer :player1_id
+      t.references :program
+      t.references :player1, index: true, foreign_key: {to_table: :user}
       t.integer :player1_score
-      t.integer :player2_id
+      t.references :player2, index: true, foreign_key: {to_table: :user}
       t.integer :player2_score
 
       t.timestamps

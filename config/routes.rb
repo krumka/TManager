@@ -2,17 +2,23 @@ Tmanager::Application.routes.draw do
 
   resources :matches
 
-
   devise_for :users, :controllers => { registrations: 'registrations', :omniauth_callbacks => 'omniauth_callbacks' }
   match '/users/:id/finish_signup' => 'users#finish_signup', via: [ :get, :put], :as => :finish_signup
 
-  resources :users
-
+  resources :users do
+    get "make_admin" => "users#make_admin"
+    get "unmake_admin" => "users#unmake_admin"
+    get "calculate_points" => "users#calculate_points"
+  end
+  get "ranking" => "users#ranking"
 
   root :to => 'pages#home'
   resources :games
   resources :games_images
   resources :tournaments do
+    post "matches/all" => "matches#update_many"
+    get "set_scores" => "tournaments#set_scores"
+    get "generate_matches" => "tournaments#generate_matches"
     resources :games do
       post "add" => "games#add_to_tournament"
       post "delete" => "games#del_from_tournament"
@@ -21,6 +27,13 @@ Tmanager::Application.routes.draw do
     end
   end
 
+
+  #Must be the last
+  match "*a", :to => "application#routing_error"
+
+  def routing_error
+    render "404", :status => 404
+  end
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

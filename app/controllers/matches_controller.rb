@@ -2,7 +2,9 @@ class MatchesController < ApplicationController
   # GET /matches
   # GET /matches.json
   def index
-    @matches = Match.all
+    authorize! :index, Match
+
+    @matches = Match.order(:id).all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -13,6 +15,8 @@ class MatchesController < ApplicationController
   # GET /matches/1
   # GET /matches/1.json
   def show
+    authorize! :show, Match
+
     @match = Match.find(params[:id])
 
     respond_to do |format|
@@ -21,25 +25,17 @@ class MatchesController < ApplicationController
     end
   end
 
-  # GET /matches/new
-  # GET /matches/new.json
-  def new
-    @match = Match.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @match }
-    end
-  end
-
   # GET /matches/1/edit
   def edit
+    authorize! :edit, Match
     @match = Match.find(params[:id])
   end
 
   # POST /matches
   # POST /matches.json
   def create
+    authorize! :create, Match
+
     @match = Match.new(match_params)
 
     respond_to do |format|
@@ -56,6 +52,8 @@ class MatchesController < ApplicationController
   # PATCH/PUT /matches/1
   # PATCH/PUT /matches/1.json
   def update
+    authorize! :update, Match
+
     @match = Match.find(params[:id])
 
     respond_to do |format|
@@ -69,15 +67,13 @@ class MatchesController < ApplicationController
     end
   end
 
-  # DELETE /matches/1
-  # DELETE /matches/1.json
-  def destroy
-    @match = Match.find(params[:id])
-    @match.destroy
-
-    respond_to do |format|
-      format.html { redirect_to matches_url }
-      format.json { head :no_content }
+  def update_many
+    authorize! :update, Match
+    @tournament = Tournament.find(params[:tournament_id])
+    if Match.update(params[:matches].keys, params[:matches].values)
+      redirect_to @tournament, notice: 'Matches have been updated'
+    else
+      redirect_to @tournament, notice: 'There was a problem updating matches'
     end
   end
 
@@ -87,6 +83,8 @@ class MatchesController < ApplicationController
     # params.require(:person).permit(:name, :age)
     # Also, you can specialize this method with per-user checking of permissible attributes.
     def match_params
-      params.require(:match).permit(:player1_id, :player1_score, :player2_id, :player2_score, :program_id)
+      authorize! :update, Match
+
+      params.require(:match).permit(:player1_score, :player2_score)
     end
 end

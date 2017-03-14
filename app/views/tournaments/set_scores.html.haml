@@ -1,0 +1,33 @@
+.row
+  %h1 Set Scores
+.row
+  .col-xs-12
+    = form_tag tournament_url(@tournament) + "/matches/all" do
+      - @matches.each_with_index do |m, i|
+        .row
+          %h2.col-sm-6.col-sm-offset-3.text-center= m.player1.username + " vs " + m.player2.username
+        = fields_for "matches[#{m.id}]", m do |mf|
+          .row
+            .col-xs-12
+              .row
+                .col-sm-4.col-sm-offset-1.col-lg-2.col-lg-offset-3
+                  .form-group
+                    .input-group
+                      .input-group-addon
+                        %i.fa.fa-tag{"aria-hidden" => "true"}
+                      = mf.number_field :player1_score, class: "form-control", placeholder: "Score Player 1"
+                .col-sm-2
+                  .big.text-center -
+                .col-sm-4.col-lg-2
+                  .form-group
+                    .input-group
+                      .input-group-addon
+                        %i.fa.fa-tag{"aria-hidden" => "true"}
+                      = mf.number_field :player2_score, class: "form-control", placeholder: "Score Player 2"
+              .row
+                %h2.col-sm-6.col-sm-offset-3.text-center= m.games.first.name
+              %hr/
+              - if i == @matches.size - 1
+                .row
+                  .actions.text-center.col-xs-12
+                    = mf.submit "Set Scores", class: "btn btn-up btn-success"

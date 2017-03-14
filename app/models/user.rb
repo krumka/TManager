@@ -91,4 +91,41 @@ class User < ActiveRecord::Base
   def email_verified?
     self.email && self.email !~ TEMP_EMAIL_REGEX
   end
+
+  def calculate_points
+    points = 0
+    victory = 0
+    defeat = 0
+    mp1 = Match.where("player1_id = ?", self.id)
+    mp1.each do |m|
+      if m.player1_score > m.player2_score
+        points += 3
+        victory += 1
+      else
+        if m.player1_score == m.player2_score
+          points += 1
+        else
+          defeat += 1
+        end
+      end
+    end
+    mp2 = Match.where("player2_id = ?", self.id)
+    mp2.each do |m|
+      if m.player1_score < m.player2_score
+        points += 3
+        victory += 1
+      else
+        if m.player1_score == m.player2_score
+          points += 1
+        else
+          defeat += 1
+        end
+      end
+    end
+    self.points = points
+    self.nb_defeat = defeat
+    self.nb_victory = victory
+    self.save
+  end
+
 end

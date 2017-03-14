@@ -8,8 +8,8 @@
         .input-group
           .input-group-addon
             %i.fa.fa-envelope{"aria-hidden" => "true"}
-          = f.email_field :email, autofocus: true, placeholder: "Email Address"
-      .actions
+          = f.email_field :email, autofocus: true, placeholder: "Email Address", class: "form-control"
+      .actions.text-center
         = f.submit "Send me reset password instructions", class: 'btn btn-primary btn-up'
 .row
   .col-sm-6.col-sm-offset-3.text-center= render "devise/shared/links"
