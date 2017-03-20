@@ -1,5 +1,24 @@
 Tmanager::Application.routes.draw do
 
+  scope '/api' do
+    scope '/v1' do
+      scope '/email' do
+        post '/exists' => 'users#email_exists'
+      end
+      scope '/username' do
+        post '/exists' => 'users#username_exists'
+      end
+      scope '/tournaments' do
+        post '/addGame2Tournament' => 'tournaments#addGame2Tournament'
+        post '/deleteGame2Tournament' => 'tournaments#deleteGame2Tournament'
+        post '/generate_matches' => 'tournaments#api_generate_matches'
+      end
+      scope '/matches/:id' do
+        post '/setScore' => 'matches#set_scores'
+      end
+    end
+  end
+
   resources :matches
 
   devise_for :users, :controllers => { registrations: 'registrations', :omniauth_callbacks => 'omniauth_callbacks' }
@@ -29,11 +48,10 @@ Tmanager::Application.routes.draw do
 
 
   #Must be the last
-  match "*a", :to => "application#routing_error"
-
-  def routing_error
-    render "404", :status => 404
+  if !Rails.env.development?
+    match "*a", :to => "application#routing_error"
   end
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

@@ -11,6 +11,12 @@ switch(url){
     case "tournaments" :
         loadScript("tournaments.js", null);
         break;
+    case "users" :
+        loadScript("users.js", null);
+        break;
+    case "matches" :
+        loadScript("matches.js", null);
+        break;
 }
 $( document ).ready(function() {
     $( window ).resize(function() {

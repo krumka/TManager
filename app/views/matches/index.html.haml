@@ -7,6 +7,7 @@
       %tr
         %th Player1
         %th Player2
+        %th Game
         %th Score
         %th
         %th
@@ -15,6 +16,7 @@
         %tr
           %td= match.player1.username
           %td= match.player2.username
+          %td= match.games.first.name
           %td= match.score
-          %td= link_to 'Show', match, class: "btn-up btn btn-primary"
-          %td= link_to 'Set Score', edit_match_path(match), class: "btn-up btn btn-warning"
+          %td= link_to 'Show', match, class: "btn-up btn btn-primary btn-show"
+          %td= link_to 'Set Score', edit_match_path(match), class: "btn-up btn btn-warning btn-set-score"

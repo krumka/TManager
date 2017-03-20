@@ -1,0 +1,9 @@
+%p
+  Hello
+  = @user.firstname
+  ,
+
+%p
+  You have successfully subscribed to the tournament "
+  = link_to @tournament.name, tournament_url(@tournament)
+  "

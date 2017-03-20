@@ -14,7 +14,7 @@
     - if (@tournament.date - 2.days) < DateTime.now && @tournament.date > DateTime.now
       - if !@tournament.matches.any?
         .col-sm-3
-          = link_to 'Generate Matches', tournament_url(@tournament) + "/generate_matches", class: "btn-up btn btn-success"
+          = link_to 'Generate Matches', tournament_url(@tournament) + "/generate_matches", id: "generate_matches", class: "btn-up btn btn-success"
 .row
   %b.col-sm-3
     Date :
@@ -89,7 +89,7 @@
       %h3 No User Subscribed yet
 - if @tournament.matches
   - if @tournament.matches.any?
-    .row
+    .row.matches
       .col-sm-8
         %h1 Matches :
       - if can? :update, Match
@@ -118,8 +118,9 @@
           - if can? :update, Match
             = link_to 'Set Score', edit_match_path(match), class: "btn-up btn btn-success"
       %hr/
-.row
+.row.last
   .col-xs-2= link_to 'Back', tournaments_path, class: "btn-up btn btn-primary"
   - if can? :update, Tournament
-    .col-xs-2= link_to 'Add Games', @tournament.id.to_s + "/games/new", class: "btn-up btn btn-primary"
+    -if @tournament.users.nil?
+      .col-xs-2= link_to 'Add Games', @tournament.id.to_s + "/games/new", class: "btn-up btn btn-primary"
 .void

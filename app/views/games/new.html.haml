@@ -13,11 +13,11 @@
   - if @games.nil?
     .row
       %h3.col-xs-12 No games added yet
-  .row
+  .row#gamesOnTournament
     - @games.each do |game|
-      %p.game.row
-        .col-xs-6= link_to game.name, game
-        .col-xs-6= link_to "Delete", tournaments_path + "/" + @tournament.id.to_s + games_path + "/" + game.id.to_s + "/delete", id: "delete_game", class: "btn btn-primary btn-up", style: "margin-left: 20px;text-decoration: none;"
+      .row.game
+        .col-xs-6.game_name= link_to game.name, game
+        .col-xs-6= link_to "Delete", game.id.to_s, id: "delete_game", class: "btn btn-primary btn-up btn-delete-game", style: "margin-left: 20px;text-decoration: none;"
   -if (Game.all - @games).any?
     %hr/
     .row
@@ -25,7 +25,8 @@
       %a.col-xs-3.btn.btn-up.btn-primary#addGame2Tournament Add
   -else
     .row
-      .col-sm-5%h3 No more games to add
-      .col-sm-3= link_to 'Add Game', new_game_path, class: "btn-up btn btn-primary"
+      %h3.col-sm-5 No more games to add
+      .col-sm-3= link_to 'Add Games', new_game_path, class: "btn-up btn btn-primary"
   .row
     .col-sm-3= link_to 'Go back to the tournament', @tournament, class: "btn-up btn btn-primary"
+  #tournament_id.hide= @tournament.id

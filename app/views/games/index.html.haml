@@ -1,8 +1,9 @@
 .row.title-page
   %h1.col-sm-9
     = @tournament.nil? ? "Listing games" : "Listing games for " + @tournament.name
-
-  .col-sm-3= link_to 'New Game', new_game_path, class: "btn-up btn btn-primary"
+  -if current_user
+    - if current_user.is_admin
+      .col-sm-3= link_to 'New Game', new_game_path, class: "btn-up btn btn-primary"
 
 -if @games.empty?
   .row

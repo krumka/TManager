@@ -1,0 +1,31 @@
+- if @tournament.matches
+  - if @tournament.matches.any?
+    .row#matches
+      .col-sm-8
+        %h1 Matches :
+      - if can? :update, Match
+        .col-sm-4
+          =link_to "Set Scores", tournament_url(@tournament) + "/set_scores", class: "btn btn-up btn-success"
+    .row.bold.text-center
+      .col-sm-3
+        Game
+      .col-sm-3
+        Player 1
+      .col-sm-3
+        Player 2
+      .col-sm-3
+        Score
+    %hr/
+    - @tournament.matches.order(:program_id).each do |match|
+      .row.text-center
+        .col-sm-3
+          = match.games.first.name
+        .col-sm-3
+          = match.player1.username
+        .col-sm-3
+          = match.player2.username
+        .col-sm-3
+          = match.score
+          - if can? :update, Match
+            = link_to 'Set Score', edit_match_path(match), class: "btn-up btn btn-success"
+      %hr/

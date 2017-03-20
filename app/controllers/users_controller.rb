@@ -43,13 +43,13 @@ class UsersController < ApplicationController
     authorize! :update, @user
 
     # authorize! :update, @user
-    @user.username = params[:user][:username]
-    @user.name = params[:user][:name]
-    @user.firstname = params[:user][:firstname]
-    @user.adress = params[:user][:adress]
+    @user.username = params[:user][:username].downcase.camelize
+    @user.name = params[:user][:name].downcase.camelize
+    @user.firstname = params[:user][:firstname].downcase.camelize
+    @user.adress = params[:user][:adress].downcase.camelize
     @user.zip_code = params[:user][:zip_code]
-    @user.city = params[:user][:city]
-    @user.country = params[:user][:country]
+    @user.city = params[:user][:city].downcase.camelize
+    @user.country = params[:user][:country].downcase.camelize
     @user.geocode
     @user.image = params[:user][:image]
     if params[:user][:role]
@@ -93,38 +93,43 @@ class UsersController < ApplicationController
   end
 
   def subscribe
-    authorize! :subscribe, @user
-
-    @tournament = Tournament.find(params[:tournament_id])
-    if @tournament.users.uniq.size < @tournament.max_gamers
-      if (@tournament.date - 2.days) < DateTime.now
-        redirect_to @tournament, notice: 'The subscriptions for this tournament are over'
-      else
-        if !current_user.programs.where(tournament_id: params[:tournament_id]).where(game_id: params[:game_id]).exists?
-          current_user.programs << Program.where(tournament_id: params[:tournament_id]).where(game_id: params[:game_id])
-          redirect_to @tournament, notice: 'You successfully subscribed to ' + Game.find(params[:game_id]).name + ' on ' + Tournament.find(params[:tournament_id]).name + ' tournament.'
+    if current_user
+      @tournament = Tournament.find(params[:tournament_id])
+      if @tournament.users.uniq.size < @tournament.max_gamers
+        if (@tournament.date - 2.days) < DateTime.now
+          redirect_to @tournament, notice: 'The subscriptions for this tournament are over'
         else
-          redirect_to @tournament, notice: 'You already subscribed to ' + Game.find(params[:game_id]).name + ' on ' + Tournament.find(params[:tournament_id]).name + ' tournament.'
+          if !current_user.programs.where(tournament_id: params[:tournament_id]).where(game_id: params[:game_id]).exists?
+            current_user.programs << Program.where(tournament_id: params[:tournament_id]).where(game_id: params[:game_id])
+            UserMailer.subscribe_tournament(@tournament, Game.find(params[:game_id]), current_user).deliver
+            redirect_to @tournament, notice: 'You successfully subscribed to ' + Game.find(params[:game_id]).name + ' on ' + Tournament.find(params[:tournament_id]).name + ' tournament.'
+          else
+            redirect_to @tournament, notice: 'You already subscribed to ' + Game.find(params[:game_id]).name + ' on ' + Tournament.find(params[:tournament_id]).name + ' tournament.'
+          end
         end
+      else
+        redirect_to @tournament, notice: 'The subscriptions for this tournament are full'
       end
     else
-      redirect_to @tournament, notice: 'The subscriptions for this tournament are full'
+      redirect_to @tournament, notice: 'You have to connect first'
     end
   end
 
   def unsubscribe
-    authorize! :subscribe, @user
-
-    @tournament = Tournament.find(params[:tournament_id])
-    if (@tournament.date - 2.days) < DateTime.now
-      redirect_to @tournament, notice: 'The subscriptions for this tournament are over'
-    else
-      if current_user.programs.where(tournament_id: params[:tournament_id]).where(game_id: params[:game_id]).exists?
-        current_user.programs.delete(Program.where(tournament_id: params[:tournament_id]).where(game_id: params[:game_id]))
-        redirect_to @tournament, notice: 'You successfully unsubscribed to ' + Game.find(params[:game_id]).name + ' on ' + Tournament.find(params[:tournament_id]).name + ' tournament.'
+    if current_user
+      @tournament = Tournament.find(params[:tournament_id])
+      if (@tournament.date - 2.days) < DateTime.now
+        redirect_to @tournament, notice: 'The subscriptions for this tournament are over'
       else
-        redirect_to @tournament, notice: 'You already unsubscribed to ' + Game.find(params[:game_id]).name + ' on ' + Tournament.find(params[:tournament_id]).name + ' tournament.'
+        if current_user.programs.where(tournament_id: params[:tournament_id]).where(game_id: params[:game_id]).exists?
+          current_user.programs.delete(Program.where(tournament_id: params[:tournament_id]).where(game_id: params[:game_id]))
+          redirect_to @tournament, notice: 'You successfully unsubscribed to ' + Game.find(params[:game_id]).name + ' on ' + Tournament.find(params[:tournament_id]).name + ' tournament.'
+        else
+          redirect_to @tournament, notice: 'You already unsubscribed to ' + Game.find(params[:game_id]).name + ' on ' + Tournament.find(params[:tournament_id]).name + ' tournament.'
+        end
       end
+    else
+      redirect_to @tournament, notice: 'You have to connect first'
     end
   end
 
@@ -166,9 +171,29 @@ class UsersController < ApplicationController
     @users = User.order("points DESC").where("points != 0")
   end
 
+  def email_exists
+    render json: { email: !User.where("email = ?", params[:email].downcase).empty? }
+  end
+
+  def username_exists
+    render json: { username: !User.where("username = ?", params[:username].downcase.camelize).empty? }
+  end
+
   private
     def set_user
       @user = User.find(params[:id])
+      if request.params[:action] != "show"
+        if current_user.role != 1 && current_user.id != @user.id
+          if Rails.env.development?
+            redirect_to root_path, :alert => "Error 401 - " + "Forbidden" +
+                (current_user.role != 1).to_s +
+                "\nAction : " + request.params[:action] +
+                "\nController : " + request.params[:controller]
+          else
+            render "errors/unauthorized"
+          end
+        end
+      end
     end
 
   def user_params

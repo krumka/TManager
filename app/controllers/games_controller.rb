@@ -103,15 +103,21 @@ class GamesController < ApplicationController
 
   def add_to_tournament
     authorize! :edit, Tournament
-
-    Tournament.find(params[:tournament_id]).games << Game.find(params[:game_id])
-    redirect_to "/tournaments/" + params[:tournament_id] + "/games/new", notice: 'Game added to the tournament'
+    if Tournament.find(params[:tournament_id]).users.nil?
+      Tournament.find(params[:tournament_id]).games << Game.find(params[:game_id])
+      redirect_to "/tournaments/" + params[:tournament_id] + "/games/new", notice: 'Game added to the tournament'
+    else
+      redirect_to "/tournaments/" + params[:tournament_id] + "/games/new", notice: 'You can\'t add the game'
+    end
   end
 
   def del_from_tournament
     authorize! :edit, Tournament
-
-    Tournament.find(params[:tournament_id]).games.delete(Game.find(params[:game_id]))
-    redirect_to "/tournaments/" + params[:tournament_id] + "/games/new", notice: 'Game deleted from the tournament'
+    if Tournament.find(params[:tournament_id]).users.nil?
+      Tournament.find(params[:tournament_id]).games.delete(Game.find(params[:game_id]))
+      redirect_to "/tournaments/" + params[:tournament_id] + "/games/new", notice: 'Game deleted from the tournament'
+    else
+      redirect_to "/tournaments/" + params[:tournament_id] + "/games/new", notice: 'You can\'t delete the game'
+    end
   end
 end

@@ -1,33 +1,61 @@
 $( document ).ready(function() {
     $("#addGame2Tournament").on("click", function (e) {
         e.preventDefault();
-        $.redirectPost($('select#Games').val()+"/add", {game: $('select#Games').val()});
+        game_id = $('select#Games').val();
+        $.ajax({
+            type: "POST",
+            url: "/api/v1/tournaments/addGame2Tournament",
+            data: { game_id: game_id, tournament_id: $('#tournament_id').text() },
+            dataType: "json",
+            success: function(done){
+                $("#gamesOnTournament").append(done.html);
+                addEventDelete($(".btn-delete-game").last());
+                $('option[value="' + game_id + '"]').remove();
+            }
+        });
     });
-    $("#delete_game").on("click", function (e) {
+    addEventDelete($(".btn-delete-game"));
+    $("#generate_matches").on("click", function (e) {
         e.preventDefault();
-        $.redirectPost($(this).attr("href"), {game: 1});
+        var tournament_id = $(location).attr('href').split("/");
+        tournament_id = tournament_id[tournament_id.length-1];
+        tournament_id = tournament_id.split("?")[0];
+        $.ajax({
+            type: "POST",
+            url: "/api/v1/tournaments/generate_matches",
+            data: { tournament_id: tournament_id },
+            dataType: "json",
+            success: function(done){
+                if(done.generate){
+                    $(".last").before(done.html);
+                    $('html,body').animate({scrollTop: $("#matches").offset().top},'slow');
+                }
+            },
+            error: function (e) {
+                console.log(e.responseText);
+            }
+        });
     });
 });
 
-
-
-$.extend(
-    {
-        redirectPost: function(location, args)
-        {
-            var form = '';
-            $.each( args, function( key, value ) {
-                form += '<input type="hidden" name="'+key+'" value="'+value+'">';
-            });
-            $('<form action="'+location+'" method="POST">'+form+'</form>').appendTo('body').submit();
-        },
-        redirectDelete: function(location, args)
-        {
-            var form = '';
-            $.each( args, function( key, value ) {
-                form += '<input type="hidden" name="'+key+'" value="'+value+'">';
-            });
-            $('<form action="'+location+'" method="DELETE">'+form+'</form>').appendTo('body').submit();
-        }
-    }
-);
+function addEventDelete(elem){
+    elem.on("click", function (e) {
+        e.preventDefault();
+        line = $(this).parent().parent();
+        game_id = $(this).attr("href");
+        game_name = $(this).closest(".game_name a").text();
+        tournament_id = $('#tournament_id').text();
+        $.ajax({
+            type: "POST",
+            url: "/api/v1/tournaments/deleteGame2Tournament",
+            data: { game_id: game_id, tournament_id: tournament_id },
+            dataType: "json",
+            success: function(done){
+                if(done.delete){
+                    line.remove();
+                    $("select").append(done.html)
+                }
+            }
+        });
+    });
+}

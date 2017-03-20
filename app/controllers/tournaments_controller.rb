@@ -16,13 +16,7 @@ class TournamentsController < ApplicationController
   def show
     @tournament = Tournament.find(params[:id])
     @games = @tournament.games
-    @userss = @tournament.users
-    @users = []
-    @userss.each do |user|
-      unless @users.include?(user)
-        @users << user
-      end
-    end
+    @users = @tournament.users.uniq
     if @tournament.lat.nil? || @tournament.lon.nil?
       @tournament.geocode
     end
@@ -111,11 +105,47 @@ class TournamentsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
   def generate_matches
     authorize! :edit, Tournament
     authorize! :create, Match
 
     @tournament = Tournament.find(params[:tournament_id])
     redirect_to @tournament, notice: @tournament.generate_matches
+  end
+
+  def addGame2Tournament
+    if Tournament.find(params[:tournament_id]).users.nil?
+      Tournament.find(params[:tournament_id]).games << Game.find(params[:game_id])
+      html = "<div class=\"row game\"><div class=\"col-xs-6 game_name\"><a href=\"/games/#{params[:game_id]}\">#{Game.find(params[:game_id]).name}</a></div><div class=\"col-xs-6\"><a href=\"#{params[:game_id]}\" class=\"btn btn-primary btn-up btn-delete-game\" id=\"delete_game\" style=\"margin-left: 20px;text-decoration: none;\">Delete</a></div></div>"
+      render json: {html: html}
+    else
+      render json: {delete: false}
+    end
+  end
+
+  def deleteGame2Tournament
+    if Tournament.find(params[:tournament_id]).users.nil?
+      if Tournament.find(params[:tournament_id]).games.delete(Game.find(params[:game_id]))
+        html = "<option value=\"" + params[:game_id] + "\">" + Game.find(params[:game_id]).name + "</option>"
+        render json: {delete: true, html: html}
+      else
+        render json: {delete: false}
+      end
+    else
+      render json: {delete: false}
+    end
+  end
+
+  def api_generate_matches
+    authorize! :edit, Tournament
+    authorize! :create, Match
+
+    @tournament = Tournament.find(params[:tournament_id])
+
+    if @tournament.generate_matches
+      html = view_context.render :partial => 'matches'
+      render json: {generate: true, html: html}
+    end
   end
 end

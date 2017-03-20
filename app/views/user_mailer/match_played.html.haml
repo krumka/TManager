@@ -1,0 +1,13 @@
+%p
+  Hello
+  = @user.firstname
+  ,
+
+%p
+  Your scores for the game
+  = link_to @match.games.first.name, game_url(@match.games.first)
+  against
+  = @opponent.username
+  in the tournament "
+  = link_to @match.tournaments.first.name, tournament_url(@match.tournaments.first)
+  " has been updated.

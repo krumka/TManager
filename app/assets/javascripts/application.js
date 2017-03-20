@@ -12,6 +12,8 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require bootstrap-filestyle.min
 //= require bootstrap-sprockets
 //= require dropzone.min
-//= require_tree .
+//= require jquery.validate.min
+//= require _include

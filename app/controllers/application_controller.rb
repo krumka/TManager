@@ -10,25 +10,21 @@ class ApplicationController < ActionController::Base
   rescue_from ActiveRecord::RecordNotFound,
               :with => :render_not_found
   rescue_from CanCan::AccessDenied do |exception|
-    if Rails.env.development?
-      redirect_to root_path, :alert => "Error 401 - " + exception.message +
-          "\nAction : " + request.params[:action] +
-          "\nController : " + request.params[:controller]
-    else
+    if !Rails.env.development?
       render "errors/unauthorized"
     end
   end
   before_filter :ensure_signup_complete, only: [:new, :create, :update, :destroy]
 
   def render_not_found(exception)
-    if Rails.env.development?
-      redirect_to root_path, :alert => "Error 404 - " + exception.message
-    else
+    if !Rails.env.development?
       render  "errors/404", :status => 404
     end
   end
   def routing_error
+    if !Rails.env.development?
       render "errors/404route", :status => 404
+    end
   end
 
   def render_error(exception)

@@ -58,6 +58,8 @@ class MatchesController < ApplicationController
 
     respond_to do |format|
       if @match.update_attributes(match_params)
+        UserMailer.match_played(@match.player1, @match.player2, @match).deliver
+        UserMailer.match_played(@match.player2, @match.player1, @match).deliver
         format.html { redirect_to @match, notice: 'Match was successfully updated.' }
         format.json { head :no_content }
       else
@@ -71,9 +73,21 @@ class MatchesController < ApplicationController
     authorize! :update, Match
     @tournament = Tournament.find(params[:tournament_id])
     if Match.update(params[:matches].keys, params[:matches].values)
+
       redirect_to @tournament, notice: 'Matches have been updated'
     else
       redirect_to @tournament, notice: 'There was a problem updating matches'
+    end
+  end
+
+  def set_scores
+    @match = Match.find(params[:id])
+    if @match.update_attributes(match_params)
+      UserMailer.match_played(@match.player1, @match.player2, @match).deliver
+      UserMailer.match_played(@match.player2, @match.player1, @match).deliver
+      render json: {update: true, html: @match.score}
+    else
+      render json: {update: false}
     end
   end
 
