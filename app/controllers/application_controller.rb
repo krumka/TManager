@@ -45,7 +45,7 @@ class ApplicationController < ActionController::Base
   end
   def no_admin
     if User.where("role = ?", 1).empty? && User.all.size == 1
-      User.make_admin
+      User.first.make_admin
       redirect_to "/", danger: "Your account was just upgraded to admin"
     end
   end
