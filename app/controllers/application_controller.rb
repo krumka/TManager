@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  before_filter :no_admin
   #rescue_from Exception,
   #            :with => :render_error
   rescue_from ActionController::RoutingError,
@@ -40,6 +41,12 @@ class ApplicationController < ActionController::Base
     # email hasn't been verified yet
     if current_user && !current_user.email_verified?
       redirect_to edit_user_registration_path(current_user), danger: "Please, comfirm your email first."
+    end
+  end
+  def no_admin
+    if User.where("role = ?", 1).empty? && User.all.size == 1
+      User.make_admin
+      redirect_to "/", danger: "Your account was just upgraded to admin"
     end
   end
 end

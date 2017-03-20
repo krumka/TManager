@@ -131,5 +131,8 @@ class User < ActiveRecord::Base
     self.nb_victory = victory
     self.save
   end
-
+  def make_admin
+    self.role = 1
+    self.save
+  end
 end
